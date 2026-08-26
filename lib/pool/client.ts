@@ -11,6 +11,7 @@ import { createPrivateTransfers } from "@starkware-libs/starknet-privacy-sdk";
 import type {
   PrivateTransfersInterface,
   PrivateTransfersUser,
+  ViewingKey,
 } from "@starkware-libs/starknet-privacy-sdk";
 import { RpcProvider } from "starknet";
 
@@ -22,7 +23,7 @@ import { chainId, env } from "../env";
  * earner has ever received, which is exactly the disclosure Velum exists to avoid.
  */
 export interface ViewingKeySource {
-  getViewingKey(): Promise<string>;
+  getViewingKey(): Promise<ViewingKey>;
 }
 
 export interface PoolClientParams {
