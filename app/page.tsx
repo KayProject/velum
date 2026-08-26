@@ -1,39 +1,37 @@
-import Link from "next/link";
+import { Navbar } from "./components/Navbar";
+import { Hero } from "./components/Hero";
+import { TrustBar } from "./components/TrustBar";
+import { TheDifference } from "./components/TheDifference";
+import { Features } from "./components/Features";
+import { UseCases } from "./components/UseCases";
+import { HowItWorks } from "./components/HowItWorks";
+import { ResultsMetrics } from "./components/ResultsMetrics";
+import { ClaimExamples } from "./components/ClaimExamples";
+import { Testimonials } from "./components/Testimonials";
+import { ProtocolTiers } from "./components/ProtocolTiers";
+import { FaqAccordion } from "./components/FaqAccordion";
+import { TerminalCTA } from "./components/TerminalCTA";
+import { Footer } from "./components/Footer";
 
 export default function Home() {
   return (
-    <main className="mx-auto flex min-h-screen max-w-2xl flex-col justify-center gap-8 px-6 py-16">
-      <div>
-        <h1 className="text-5xl font-semibold tracking-tight">Velum</h1>
-        <p className="mt-4 text-lg text-[var(--color-mist)]">
-          A landlord wants to know you clear ₦4.2m a quarter. Today you answer by handing over
-          bank statements — every client, every amount, every date, for one yes-or-no question.
-        </p>
-        <p className="mt-4 text-lg text-[var(--color-mist)]">
-          Velum answers the question and nothing else. The sum is computed inside a proof; what
-          lands on chain is a commitment, a verifier binding, and an expiry.
-        </p>
-      </div>
-
-      <div className="flex flex-wrap gap-3">
-        <Link
-          href="/app"
-          className="rounded-lg bg-[var(--color-signal)] px-5 py-3 font-medium text-[var(--color-ink)]"
-        >
-          I earned it
-        </Link>
-        <Link
-          href="/payer"
-          className="rounded-lg border border-[var(--color-edge)] px-5 py-3 font-medium"
-        >
-          I paid someone
-        </Link>
-      </div>
-
-      <p className="text-sm text-[var(--color-mist)]">
-        Verifiers do not need this page, an account, or a wallet — they open the link they were
-        given.
-      </p>
-    </main>
+    <div className="min-h-screen bg-[#fafafa] flex flex-col justify-between">
+      <Navbar />
+      <main>
+        <Hero />
+        <TrustBar />
+        <TheDifference />
+        <Features />
+        <UseCases />
+        <HowItWorks />
+        <ResultsMetrics />
+        <ClaimExamples />
+        <Testimonials />
+        <ProtocolTiers />
+        <FaqAccordion />
+        <TerminalCTA />
+      </main>
+      <Footer />
+    </div>
   );
 }
