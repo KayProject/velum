@@ -10,3 +10,4 @@ out/
 .snfoundry_cache/
 next-env.d.ts
 *.tsbuildinfo
+.vercel

@@ -1,21 +1,22 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export function Navbar() {
   return (
     <header className="w-full bg-transparent pt-6 pb-4 relative z-40">
       <div className="mx-auto max-w-[1360px] px-6 sm:px-10 flex items-center justify-between">
-        {/* Logo (Star icon + VELUM matching Verseo Image 1) */}
+        {/* Logo (Velum official logo mark + text) */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <svg
-            className="h-5 w-5 text-[#181818]"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            {/* Verseo 4-pointed star / diamond mark */}
-            <path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z" />
-          </svg>
+          <Image
+            src="/velum.png"
+            alt="Velum Logo"
+            width={24}
+            height={24}
+            className="h-6 w-6 object-contain transition-transform group-hover:scale-105"
+            priority
+          />
           <span className="font-display text-base font-extrabold tracking-wider text-[#181818]">
             VELUM
           </span>
@@ -34,6 +35,9 @@ export function Navbar() {
           </a>
           <a href="#features" className="transition-colors hover:text-[#686868]">
             Features
+          </a>
+          <a href="#faq" className="transition-colors hover:text-[#686868]">
+            FAQ
           </a>
           <a href="#contact" className="transition-colors hover:text-[#686868]">
             Contact Us

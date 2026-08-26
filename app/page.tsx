@@ -5,6 +5,7 @@ import { TheDifference } from "./components/TheDifference";
 import { Features } from "./components/Features";
 import { UseCases } from "./components/UseCases";
 import { HowItWorks } from "./components/HowItWorks";
+import { FaqAccordion } from "./components/FaqAccordion";
 import { TerminalCTA } from "./components/TerminalCTA";
 import { Footer } from "./components/Footer";
 
@@ -19,6 +20,7 @@ export default function Home() {
         <Features />
         <UseCases />
         <HowItWorks />
+        <FaqAccordion />
         <TerminalCTA />
       </main>
       <Footer />

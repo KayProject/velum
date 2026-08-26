@@ -1,20 +1,21 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export function Footer() {
   return (
     <footer className="bg-white py-16 sm:py-24 border-t border-[#ededed]/60 text-xs text-[#686868]">
       <div className="mx-auto max-w-[1360px] px-6 sm:px-10">
         <div className="grid gap-12 lg:grid-cols-12 items-start justify-between">
-          {/* Left Column: Logo & Tagline (Verseo Image 6 Exact Replica) */}
+          {/* Left Column: Logo & Tagline */}
           <div className="space-y-4 lg:col-span-6 max-w-sm">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <svg
-                className="h-5 w-5 text-[#181818]"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z" />
-              </svg>
+              <Image
+                src="/velum.png"
+                alt="Velum Logo"
+                width={24}
+                height={24}
+                className="h-6 w-6 object-contain transition-transform group-hover:scale-105"
+              />
               <span className="font-display text-base font-extrabold tracking-wider text-[#181818]">
                 VELUM
               </span>
@@ -26,7 +27,7 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Right Column: Contact Email (Verseo Image 6 Exact Replica) */}
+          {/* Right Column: Contact Email */}
           <div className="space-y-3 lg:col-span-6 lg:text-right">
             <span className="font-mono text-[11px] text-[#858585] block">
               [ contact us through e-mail ]
