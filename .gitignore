@@ -7,3 +7,6 @@ dist/
 out/
 *.log
 .DS_Store
+.snfoundry_cache/
+next-env.d.ts
+*.tsbuildinfo
