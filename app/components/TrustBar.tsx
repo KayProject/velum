@@ -1,47 +1,26 @@
 export function TrustBar() {
-  const pillars = [
-    {
-      label: "STRK20 Privacy Pool (V2)",
-      detail: "Mainnet Contract 0x0403...812a",
-      icon: "🔒",
-    },
-    {
-      label: "Cairo Virtual Blocks",
-      detail: "Client-Side Virtual Block Compute",
-      icon: "⚡",
-    },
-    {
-      label: "Unlinkable Identity Anchors",
-      detail: "h(tag, user, vk, contract)",
-      icon: "🛡️",
-    },
-    {
-      label: "Zero Protocol Custody",
-      detail: "No Fund Escrow or Lockup",
-      icon: "✨",
-    },
+  const partners = [
+    { name: "STRK20 Pool", icon: "⬡" },
+    { name: "Cairo 2.0", icon: "⚡" },
+    { name: "Pathfinder", icon: "◈" },
+    { name: "Starknet", icon: "✳" },
+    { name: "Argent", icon: "▲" },
+    { name: "Braavos", icon: "🛡️" },
+    { name: "Cartridge", icon: "🎮" },
   ];
 
   return (
-    <div className="border-y border-[#e4e4e7] bg-white py-8">
-      <div className="mx-auto max-w-[1360px] px-6">
-        <p className="text-center font-mono text-xs uppercase tracking-widest text-[#71717a]">
-          Cryptographic Foundation & Mainnet Guarantees
+    <div className="border-b border-[#ededed]/60 py-8 bg-transparent">
+      <div className="mx-auto max-w-[1360px] px-6 sm:px-10 text-center">
+        <p className="font-sans text-xs text-[#858585] mb-6 font-medium">
+          Trusted by modern teams &amp; DAOs
         </p>
 
-        <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">
-          {pillars.map((p, idx) => (
-            <div
-              key={idx}
-              className="flex flex-col items-center justify-center rounded-xl border border-[#f4f4f5] bg-[#fafafa] p-4 text-center transition-colors hover:border-[#e4e4e7] hover:bg-white"
-            >
-              <span className="text-xl mb-1.5">{p.icon}</span>
-              <span className="font-display text-sm font-bold text-[#111827]">
-                {p.label}
-              </span>
-              <span className="mt-0.5 font-mono text-[11px] text-[#71717a]">
-                {p.detail}
-              </span>
+        <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-14 opacity-70">
+          {partners.map((p, idx) => (
+            <div key={idx} className="flex items-center gap-2 text-xs font-semibold text-[#181818]">
+              <span className="text-sm">{p.icon}</span>
+              <span>{p.name}</span>
             </div>
           ))}
         </div>
