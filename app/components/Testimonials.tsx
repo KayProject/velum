@@ -1,72 +1,76 @@
 export function Testimonials() {
   const reviews = [
     {
-      score: "5.0",
+      score: "4,9",
       quote:
-        "I secured a flat in London with my shielded DAO income. Instead of handing over 40 pages of bank statements, I generated a Velum claim. My landlord verified my quarterly threshold in seconds.",
-      author: "Alex Rivera",
-      role: "Protocol Engineer & Independent Contractor",
+        "\"We tested several income verification tools, but Velum felt the most practical. It's fast, cryptographic, and fits naturally into our workflow.\"",
+      name: "Emma Rodriguez",
+      role: "Content Strategist & Freelancer",
     },
     {
-      score: "5.0",
+      score: "5,0",
       quote:
-        "We pay dozens of core contributors privately through Starknet. Emitting Velum attestations requires zero overhead and gives our team real-world credit credibility without doxxing treasury rails.",
-      author: "Sarah Chen",
-      role: "DAO Operations Lead",
+        "\"Velum cut our leasing approval time in half. What used to take days of bank statement redactions now takes seconds, and our privacy is 100% protected.\"",
+      name: "Sarah Chen",
+      role: "Marketing Manager & DAO Contributor",
     },
     {
-      score: "4.9",
+      score: "5,0",
       quote:
-        "Traditional underwriting demanded unredacted bank PDF statements or complete wallet disclosures. Velum gives us mathematical certainty on income thresholds with zero data liability.",
-      author: "Marcus Vance",
-      role: "Fintech Underwriter & Risk Officer",
+        "\"The biggest win for us is uncorrelatable identity. Every landlord and lender gets their own single-use proof without ever linking our accounts.\"",
+      name: "David Miller",
+      role: "Startup Founder & Contractor",
     },
   ];
 
   return (
-    <section className="border-b border-[#e4e4e7] py-20 md:py-28 bg-[#fafafa]">
-      <div className="mx-auto max-w-[1360px] px-6">
+    <section id="testimonials" className="border-b border-[#ededed] py-20 sm:py-28 bg-[#f9f9f9]">
+      <div className="mx-auto max-w-[1360px] px-4 sm:px-6">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
-          <span className="font-mono text-xs font-semibold uppercase tracking-widest text-[#059669] bg-[#ecfdf5] border border-[#a7f3d0] px-3 py-1 rounded-full">
-            [ user perspectives ]
-          </span>
-          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-[#111827] sm:text-4xl md:text-5xl">
-            Trusted by earners, DAOs, <br className="hidden sm:inline" />
-            <span className="text-[#059669]">and underwriters.</span>
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-[#ededed] bg-[#f6f6f6] px-3.5 py-1 text-xs font-mono text-[#686868]">
+            <span>[</span>
+            <span className="text-[#181818] font-medium">testimonials</span>
+            <span>]</span>
+          </div>
+
+          <h2 className="mt-6 font-display text-3xl sm:text-5xl font-bold tracking-tight text-[#181818]">
+            Loved by earners who <br className="hidden sm:inline" />
+            value their financial privacy
           </h2>
-          <p className="mt-4 text-base text-[#4b5563]">
-            See why privacy-conscious professionals and forward-thinking landlords choose zero-knowledge verification.
+
+          <p className="mt-4 text-sm sm:text-base text-[#686868] max-w-xl mx-auto">
+            From independent contractors and DAO founders to underwriting teams — Velum helps people prove credibility without sacrificing privacy.
           </p>
         </div>
 
-        {/* 3 Review Cards */}
+        {/* 3 Review Cards (Verseo exact layout) */}
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {reviews.map((r, i) => (
             <div
               key={i}
-              className="flex flex-col justify-between rounded-2xl border border-[#e4e4e7] bg-white p-7 shadow-2xs transition-all hover:border-[#10b981]"
+              className="flex flex-col justify-between rounded-[24px] border border-[#ededed] bg-white p-6 sm:p-8 shadow-2xs transition-all hover:border-[#181818]/20 hover:shadow-sm"
             >
               <div>
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, s) => (
-                    <span key={s} className="text-[#10b981] text-sm">★</span>
-                  ))}
-                  <span className="ml-2 font-mono text-xs font-bold text-[#111827]">
+                <div className="flex items-center justify-between border-b border-[#ededed] pb-4">
+                  <span className="font-mono text-xs font-bold text-[#181818]">
                     {r.score}
                   </span>
+                  <div className="flex text-[#10b981] text-xs">
+                    ★★★★★
+                  </div>
                 </div>
 
-                <p className="mt-4 text-xs leading-relaxed text-[#374151] italic">
-                  &ldquo;{r.quote}&rdquo;
+                <p className="mt-6 text-xs sm:text-sm leading-relaxed text-[#686868]">
+                  {r.quote}
                 </p>
               </div>
 
-              <div className="mt-6 border-t border-[#f4f4f5] pt-4">
-                <div className="font-display text-sm font-bold text-[#111827]">
-                  {r.author}
+              <div className="mt-8 pt-4 border-t border-[#ededed]/60">
+                <div className="font-display text-sm font-bold text-[#181818]">
+                  {r.name}
                 </div>
-                <div className="font-mono text-[11px] text-[#71717a]">
+                <div className="font-mono text-[11px] text-[#858585] mt-0.5">
                   {r.role}
                 </div>
               </div>

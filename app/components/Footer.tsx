@@ -4,58 +4,59 @@ import Link from "next/link";
 import { useState } from "react";
 
 export function Footer() {
-  const [subscribed, setSubscribed] = useState(false);
   const [email, setEmail] = useState("");
+  const [joined, setJoined] = useState(false);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
-      setSubscribed(true);
+      setJoined(true);
     }
   };
 
   return (
-    <footer className="border-t border-[#e4e4e7] bg-[#fafafa] pt-16 pb-12">
-      <div className="mx-auto max-w-[1360px] px-6">
-        <div className="grid gap-12 lg:grid-cols-12">
-          {/* Left Column: Brand and Newsletter */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#111827] text-[#fafafa] font-mono font-bold text-sm shadow-sm">
-                V
-              </div>
-              <span className="font-display text-2xl font-bold tracking-tight text-[#111827]">
-                Velum
+    <footer className="bg-[#f9f9f9] pt-16 pb-12 text-xs text-[#686868]">
+      <div className="mx-auto max-w-[1360px] px-4 sm:px-6">
+        <div className="grid gap-10 lg:grid-cols-12">
+          {/* Col 1 & 2: Contact & Newsletter */}
+          <div className="space-y-8 lg:col-span-6">
+            <div>
+              <span className="font-mono text-[11px] text-[#858585] block mb-2">
+                [ Contact us through e-mail ]
               </span>
+              <a
+                href="mailto:contact@velum.cash"
+                className="font-display text-xl sm:text-2xl font-bold text-[#181818] hover:underline"
+              >
+                contact@velum.cash
+              </a>
             </div>
 
-            <p className="text-sm leading-relaxed text-[#4b5563] max-w-sm">
-              The zero-knowledge proof layer for private income on Starknet. Prove what matters.
-              Reveal nothing else.
-            </p>
-
-            {/* Newsletter */}
-            <div className="pt-2">
-              <span className="font-mono text-xs text-[#71717a] block mb-2">
-                [ Stay connected ]
+            <div>
+              <span className="font-mono text-[11px] text-[#858585] block mb-2">
+                [ Newsletter ]
               </span>
-              {subscribed ? (
-                <div className="rounded-lg bg-[#ecfdf5] border border-[#a7f3d0] px-4 py-2.5 text-xs font-semibold text-[#047857]">
-                  ✓ You are on the STRK20 Velum dispatch list.
+              <p className="text-sm font-semibold text-[#181818] mb-3">
+                Stay connected
+              </p>
+
+              {joined ? (
+                <div className="rounded-full bg-[#10b981]/10 px-4 py-2 text-xs font-medium text-[#059669] border border-[#10b981]/20">
+                  ✓ You are on the Velum updates dispatch list.
                 </div>
               ) : (
-                <form onSubmit={handleSubscribe} className="flex max-w-sm gap-2">
+                <form onSubmit={handleSubmit} className="flex max-w-sm gap-2">
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
-                    className="w-full rounded-xl border border-[#e4e4e7] bg-white px-3.5 py-2 text-xs font-medium text-[#111827] placeholder:text-[#a1a1aa] focus:border-[#10b981] focus:outline-none"
+                    className="w-full rounded-full border border-[#ededed] bg-white px-4 py-2 text-xs text-[#181818] placeholder:text-[#858585] focus:outline-none"
                   />
                   <button
                     type="submit"
-                    className="rounded-xl bg-[#111827] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#374151]"
+                    className="rounded-full bg-[#181818] px-5 py-2 text-xs font-medium text-white transition-colors hover:bg-[#2b2b2b]"
                   >
                     Join
                   </button>
@@ -64,91 +65,104 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Right Column: Navigation Links */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 lg:col-span-7">
+          {/* Col 3: Navigation Links */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 lg:col-span-6">
             <div>
-              <span className="font-mono text-xs font-semibold text-[#111827] block mb-4">
+              <span className="font-mono text-[11px] text-[#858585] block mb-4">
                 [ Navigation ]
               </span>
-              <ul className="space-y-2.5 text-xs text-[#4b5563]">
+              <ul className="space-y-2.5">
                 <li>
-                  <Link href="/app" className="hover:text-[#10b981] transition-colors">
+                  <a href="#the-difference" className="hover:text-[#181818] transition-colors">
+                    Difference
+                  </a>
+                </li>
+                <li>
+                  <a href="#features" className="hover:text-[#181818] transition-colors">
+                    Features
+                  </a>
+                </li>
+                <li>
+                  <a href="#use-cases" className="hover:text-[#181818] transition-colors">
+                    Use Cases
+                  </a>
+                </li>
+                <li>
+                  <a href="#how-it-works" className="hover:text-[#181818] transition-colors">
+                    How it works
+                  </a>
+                </li>
+                <li>
+                  <a href="#pricing" className="hover:text-[#181818] transition-colors">
+                    Pricing
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <span className="font-mono text-[11px] text-[#858585] block mb-4">
+                [ resources ]
+              </span>
+              <ul className="space-y-2.5">
+                <li>
+                  <Link href="/app" className="hover:text-[#181818] transition-colors">
                     Earner Portal
                   </Link>
                 </li>
                 <li>
-                  <Link href="/payer" className="hover:text-[#10b981] transition-colors">
-                    Payer Attestations
+                  <Link href="/payer" className="hover:text-[#181818] transition-colors">
+                    Payer Console
                   </Link>
                 </li>
                 <li>
-                  <Link href="/v/demo" className="hover:text-[#10b981] transition-colors">
-                    Verifier Claim Check
+                  <Link href="/v/demo" className="hover:text-[#181818] transition-colors">
+                    Verifier Claim
                   </Link>
                 </li>
                 <li>
-                  <a href="#how-it-works" className="hover:text-[#10b981] transition-colors">
-                    How It Works
-                  </a>
+                  <span className="text-[#858585]">Apache-2.0</span>
                 </li>
               </ul>
             </div>
 
             <div>
-              <span className="font-mono text-xs font-semibold text-[#111827] block mb-4">
-                [ Resources ]
+              <span className="font-mono text-[11px] text-[#858585] block mb-4">
+                [ Social ]
               </span>
-              <ul className="space-y-2.5 text-xs text-[#4b5563]">
+              <ul className="space-y-2.5">
                 <li>
                   <a
-                    href="https://github.com/starkience/strk20-hackathon"
+                    href="https://x.com"
                     target="_blank"
                     rel="noreferrer"
-                    className="hover:text-[#10b981] transition-colors"
+                    className="hover:text-[#181818] transition-colors"
                   >
-                    STRK20 Sprint
+                    X (Twitter)
                   </a>
                 </li>
                 <li>
-                  <span className="text-[#9ca3af]">Architecture Spec</span>
+                  <a
+                    href="https://github.com/KayProject/velum"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-[#181818] transition-colors"
+                  >
+                    GitHub
+                  </a>
                 </li>
                 <li>
-                  <span className="text-[#9ca3af]">Cairo Contracts</span>
-                </li>
-                <li>
-                  <span className="text-[#9ca3af]">Apache-2.0 License</span>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <span className="font-mono text-xs font-semibold text-[#111827] block mb-4">
-                [ Network ]
-              </span>
-              <ul className="space-y-2.5 text-xs text-[#4b5563]">
-                <li className="font-mono text-[11px] text-[#71717a]">
-                  Chain: SN_MAIN
-                </li>
-                <li className="font-mono text-[11px] text-[#71717a]">
-                  Pool: V2.0
-                </li>
-                <li className="font-mono text-[11px] text-[#71717a]">
-                  Cairo: 2.0 Virtual
-                </li>
-                <li className="font-mono text-[11px] text-[#059669] font-medium">
-                  🟢 Operational
+                  <span className="text-[#858585]">Telegram</span>
                 </li>
               </ul>
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[#e4e4e7] pt-8 font-mono text-xs text-[#71717a]">
-          <div>© 2026 Velum. Built under Apache-2.0 License.</div>
-          <div className="flex items-center gap-2">
-            <span>Powered by Starknet STRK20 Privacy Pool</span>
-          </div>
+        {/* Bottom Copyright & Credit */}
+        <div className="mt-16 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[#ededed] pt-8 font-mono text-[11px] text-[#858585]">
+          <div>© 2026 Velum | All Rights Reserved</div>
+          <div>Built on Starknet STRK20 Privacy Pool</div>
         </div>
       </div>
     </footer>

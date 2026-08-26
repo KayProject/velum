@@ -1,125 +1,149 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 
 export function ProtocolTiers() {
-  const tiers = [
+  const [billing, setBilling] = useState<"monthly" | "annual">("monthly");
+
+  const plans = [
     {
-      name: "Earner (Individual)",
-      role: "For freelancers & contractors",
-      badge: "Sovereign",
-      cost: "Free",
-      costPeriod: "Open Source (Apache-2.0)",
+      name: "Starter",
+      desc: "For individuals and freelancers",
+      priceMonthly: "$0",
+      priceAnnual: "$0",
+      period: "Free forever",
       features: [
         "Client-side ZK claim generator",
-        "Unlinkable per-contract identity anchors",
-        "Unlimited custom threshold claims",
-        "Configurable expiration windows",
-        "Single-use link protection",
-        "Zero custody or token lockups",
+        "Unlinkable identity anchors",
+        "Multi-currency threshold claims",
+        "Open source under Apache-2.0",
       ],
-      cta: "Launch Earner App",
-      href: "/app",
       popular: false,
+      cta: "Get Started",
+      href: "/app",
     },
     {
-      name: "Payer (DAO & Enterprise)",
-      role: "For employers & payroll protocols",
-      badge: "Protocol Native",
-      cost: "6 STRK",
-      costPeriod: "per mainnet attestation batch",
+      name: "Pro",
+      desc: "For creators and professionals",
+      priceMonthly: "$29",
+      priceAnnual: "$24",
+      period: "per month",
+      features: [
+        "Advanced multi-payer aggregation",
+        "Automated expiration rules",
+        "Priority virtual block proving",
+        "Custom verifier challenge bindings",
+      ],
+      popular: true,
+      cta: "Get Started",
+      href: "/app",
+    },
+    {
+      name: "Team",
+      desc: "For agencies and growing teams",
+      priceMonthly: "$79",
+      priceAnnual: "$64",
+      period: "per month",
       features: [
         "Batch attestation emission SDK",
-        "Non-interactive recipient tag derivation",
-        "Full compatibility with STRK20 Privacy Pool",
-        "Zero recipient address disclosure",
-        "Automated payroll pipeline scripts",
-        "Verifiable Ed25519 / ECDSA signatures",
+        "Multi-recipient payroll commitment",
+        "Shared team workspace",
+        "Priority institutional support",
       ],
+      popular: false,
       cta: "Payer Console",
       href: "/payer",
-      popular: true,
-    },
-    {
-      name: "Verifier (Institutional)",
-      role: "For landlords, lenders & visa portals",
-      badge: "Zero Friction",
-      cost: "0 Gas",
-      costPeriod: "No wallet or account required",
-      features: [
-        "Instant one-click browser verification",
-        "Single boolean predicate validation",
-        "Zero Web3 wallet or extension needed",
-        "Automatic claim status verification",
-        "Tamper-proof on-chain commitment check",
-        "Zero compliance data liability",
-      ],
-      cta: "Try Verifier Flow",
-      href: "/v/demo-claim-token-2026",
-      popular: false,
     },
   ];
 
   return (
-    <section className="border-b border-[#e4e4e7] py-20 md:py-28 bg-white">
-      <div className="mx-auto max-w-[1360px] px-6">
+    <section id="pricing" className="border-b border-[#ededed] py-20 sm:py-28 bg-white">
+      <div className="mx-auto max-w-[1360px] px-4 sm:px-6">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
-          <span className="font-mono text-xs font-semibold uppercase tracking-widest text-[#059669] bg-[#ecfdf5] border border-[#a7f3d0] px-3 py-1 rounded-full">
-            [ ecosystem roles ]
-          </span>
-          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-[#111827] sm:text-4xl md:text-5xl">
-            Choose your portal in <br className="hidden sm:inline" />
-            <span className="text-[#059669]">the proof layer.</span>
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-[#ededed] bg-[#f6f6f6] px-3.5 py-1 text-xs font-mono text-[#686868]">
+            <span>[</span>
+            <span className="text-[#181818] font-medium">pricing</span>
+            <span>]</span>
+          </div>
+
+          <h2 className="mt-6 font-display text-3xl sm:text-5xl font-bold tracking-tight text-[#181818]">
+            Choose the plan that <br className="hidden sm:inline" />
+            grows with you
           </h2>
-          <p className="mt-4 text-base text-[#4b5563]">
-            Whether you earn privately, pay contributors, or underwrite claims, Velum provides dedicated,
-            frictionless interfaces.
+
+          <p className="mt-4 text-sm sm:text-base text-[#686868] max-w-xl mx-auto">
+            Whether you are creating claims solo or managing payroll across a team, there is a plan designed for your workflow.
           </p>
+
+          {/* Monthly / Annual Toggle (Verseo exact layout) */}
+          <div className="mt-8 inline-flex items-center rounded-full border border-[#ededed] bg-[#f9f9f9] p-1 shadow-2xs">
+            <button
+              type="button"
+              onClick={() => setBilling("monthly")}
+              className={`rounded-full px-4 py-1.5 text-xs font-medium transition-all ${
+                billing === "monthly"
+                  ? "bg-[#181818] text-white shadow-2xs"
+                  : "text-[#686868] hover:text-[#181818]"
+              }`}
+            >
+              Monthly
+            </button>
+            <button
+              type="button"
+              onClick={() => setBilling("annual")}
+              className={`rounded-full px-4 py-1.5 text-xs font-medium transition-all ${
+                billing === "annual"
+                  ? "bg-[#181818] text-white shadow-2xs"
+                  : "text-[#686868] hover:text-[#181818]"
+              }`}
+            >
+              Annual
+            </button>
+          </div>
         </div>
 
-        {/* 3 Tiers Grid */}
+        {/* 3 Pricing Cards (Verseo exact layout) */}
         <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {tiers.map((t, idx) => (
+          {plans.map((p, i) => (
             <div
-              key={idx}
-              className={`relative flex flex-col justify-between rounded-2xl p-7 transition-all ${
-                t.popular
-                  ? "border-2 border-[#10b981] bg-[#fafafa] shadow-md ring-1 ring-[#10b981]/20"
-                  : "border border-[#e4e4e7] bg-white shadow-2xs hover:border-[#a1a1aa]"
+              key={i}
+              className={`flex flex-col justify-between rounded-[24px] border p-6 sm:p-8 transition-all ${
+                p.popular
+                  ? "border-[#181818] bg-[#f9f9f9] shadow-md ring-1 ring-[#181818]/10"
+                  : "border-[#ededed] bg-white shadow-2xs hover:border-[#181818]/20"
               }`}
             >
               <div>
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-display text-lg font-bold text-[#111827]">
-                      {t.name}
+                    <h3 className="font-display text-xl font-bold text-[#181818]">
+                      {p.name}
                     </h3>
-                    <p className="text-xs text-[#71717a] mt-0.5">{t.role}</p>
+                    <p className="mt-1 text-xs text-[#686868]">{p.desc}</p>
                   </div>
-                  <span
-                    className={`rounded-full px-2.5 py-0.5 font-mono text-[10px] font-semibold ${
-                      t.popular
-                        ? "bg-[#ecfdf5] text-[#047857] border border-[#a7f3d0]"
-                        : "bg-[#f4f4f5] text-[#71717a] border border-[#e4e4e7]"
-                    }`}
-                  >
-                    {t.badge}
-                  </span>
+                  {p.popular && (
+                    <span className="rounded-full bg-[#181818] px-3 py-1 font-mono text-[10px] font-semibold text-white">
+                      Popular
+                    </span>
+                  )}
                 </div>
 
-                <div className="mt-6 border-y border-[#f4f4f5] py-4">
+                <div className="mt-6 border-y border-[#ededed] py-5">
                   <div className="flex items-baseline gap-1">
-                    <span className="font-display text-3xl font-extrabold text-[#111827]">
-                      {t.cost}
+                    <span className="font-display text-4xl font-extrabold text-[#181818]">
+                      {billing === "monthly" ? p.priceMonthly : p.priceAnnual}
+                    </span>
+                    <span className="font-mono text-xs text-[#858585]">
+                      / {p.period}
                     </span>
                   </div>
-                  <p className="font-mono text-xs text-[#71717a] mt-1">
-                    {t.costPeriod}
-                  </p>
                 </div>
 
-                <ul className="mt-6 space-y-3">
-                  {t.features.map((f, fi) => (
-                    <li key={fi} className="flex items-start gap-2 text-xs text-[#374151]">
+                <ul className="mt-6 space-y-3.5">
+                  {p.features.map((f, fi) => (
+                    <li key={fi} className="flex items-center gap-2.5 text-xs text-[#686868]">
                       <span className="text-[#10b981] font-bold">✓</span>
                       <span>{f}</span>
                     </li>
@@ -127,16 +151,16 @@ export function ProtocolTiers() {
                 </ul>
               </div>
 
-              <div className="mt-8">
+              <div className="mt-8 pt-4">
                 <Link
-                  href={t.href}
-                  className={`w-full block text-center rounded-xl py-3 text-xs font-semibold transition-all ${
-                    t.popular
-                      ? "bg-[#10b981] text-white hover:bg-[#059669] shadow-sm shadow-[#10b981]/20"
-                      : "border border-[#e4e4e7] bg-white text-[#111827] hover:bg-[#f4f4f5]"
+                  href={p.href}
+                  className={`w-full block text-center rounded-full py-3 text-xs font-medium transition-all ${
+                    p.popular
+                      ? "bg-[#181818] text-white hover:bg-[#2b2b2b] shadow-sm"
+                      : "border border-[#ededed] bg-white text-[#181818] hover:bg-[#f6f6f6]"
                   }`}
                 >
-                  {t.cta}
+                  {p.cta}
                 </Link>
               </div>
             </div>

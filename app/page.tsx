@@ -1,6 +1,5 @@
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
-import { TrustBar } from "./components/TrustBar";
 import { TheDifference } from "./components/TheDifference";
 import { Features } from "./components/Features";
 import { UseCases } from "./components/UseCases";
@@ -15,11 +14,10 @@ import { Footer } from "./components/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#fafafa] flex flex-col justify-between">
+    <div className="min-h-screen bg-[#f9f9f9] text-[#181818] flex flex-col justify-between selection:bg-[#10b981]/20 selection:text-[#065f46]">
       <Navbar />
-      <main>
+      <main className="w-full">
         <Hero />
-        <TrustBar />
         <TheDifference />
         <Features />
         <UseCases />
