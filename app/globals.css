@@ -56,3 +56,33 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #a1a1aa;
 }
+
+@keyframes cloud-drift-slow {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(24px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes cloud-drift-fast {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-32px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes grid-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+.animate-cloud-slow {
+  animation: cloud-drift-slow 22s ease-in-out infinite;
+}
+
+.animate-cloud-fast {
+  animation: cloud-drift-fast 16s ease-in-out infinite;
+}
+
+.animate-grid-pulse {
+  animation: grid-pulse 8s ease-in-out infinite;
+}
+

@@ -15,7 +15,7 @@ import type {
 } from "@starkware-libs/starknet-privacy-sdk";
 import { RpcProvider } from "starknet";
 
-import { chainId, env } from "../env";
+import { chainId, env } from "../env.ts";
 
 /**
  * The earner's viewing key. Held in memory for the life of one page, never written to

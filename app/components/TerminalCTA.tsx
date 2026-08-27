@@ -1,46 +1,45 @@
 import Link from "next/link";
+import { SkyBackdrop } from "./SkyBackdrop";
 
 export function TerminalCTA() {
   return (
     <section id="contact" className="relative overflow-hidden py-24 sm:py-36 border-b border-[#ededed]/60">
-      {/* Cloud & Sky Background (Verseo Image 6 Exact Replica) */}
-      <div 
-        className="absolute inset-0 -z-10 bg-cover bg-center bg-no-repeat opacity-90"
-        style={{ backgroundImage: "url('/images/clouds-bg.png')" }}
-      />
-
-      {/* Subtle overlay grid */}
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(255,255,255,0.4)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.4)_1px,transparent_1px)] bg-[size:4.5rem_4.5rem]" />
+      {/* Dynamic CTA Sky & Clouds */}
+      <SkyBackdrop variant="cta" />
 
       <div className="mx-auto max-w-[1360px] px-6 sm:px-10">
         <div className="mx-auto max-w-3xl text-center">
           {/* Tag Pill */}
-          <div className="inline-flex items-center text-xs font-mono text-[#686868] mb-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/90 px-3.5 py-1.5 text-xs font-mono text-[#404040] shadow-2xs backdrop-blur-md mb-4">
+            <span className="h-2 w-2 rounded-full bg-[#10b981]" />
             <span>[ ready to start? ]</span>
           </div>
 
           {/* Headline */}
           <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#181818] leading-[1.1]">
             Start proving your <br />
-            income today
+            <span className="text-[#059669]">income today</span>
           </h2>
 
-          <p className="mt-6 text-sm sm:text-base md:text-lg leading-relaxed text-[#686868] max-w-2xl mx-auto">
+          <p className="mt-6 text-sm sm:text-base md:text-lg leading-relaxed text-[#525252] max-w-2xl mx-auto">
             Turn private earnings into unforgeable claims in seconds. Prove, verify, and underwrite faster
             with zero-knowledge workflows designed for modern earners.
           </p>
 
           {/* 2 Buttons */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
             <Link
               href="/app"
-              className="inline-flex items-center justify-center rounded-lg bg-[#181818] px-6 py-3 text-xs sm:text-sm font-medium text-white transition-all hover:bg-[#2b2b2b] shadow-sm active:scale-95"
+              className="inline-flex items-center justify-center rounded-xl bg-[#181818] px-6 py-3.5 text-xs sm:text-sm font-medium text-white transition-all hover:bg-[#2b2b2b] shadow-md active:scale-95 gap-2"
             >
-              Get Started
+              <span>Launch Earner Portal</span>
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
             </Link>
             <Link
               href="/payer"
-              className="inline-flex items-center justify-center rounded-lg border border-[#ededed] bg-white px-6 py-3 text-xs sm:text-sm font-medium text-[#181818] transition-all hover:bg-[#f6f6f6] shadow-xs active:scale-95"
+              className="inline-flex items-center justify-center rounded-xl border border-[#ededed] bg-white/95 px-6 py-3.5 text-xs sm:text-sm font-medium text-[#181818] transition-all hover:bg-[#f6f6f6] shadow-xs active:scale-95"
             >
               Try Demo
             </Link>
@@ -50,3 +49,4 @@ export function TerminalCTA() {
     </section>
   );
 }
+
