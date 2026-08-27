@@ -8,16 +8,16 @@ export function Navbar() {
     <header className="w-full bg-transparent pt-6 pb-4 relative z-40">
       <div className="mx-auto max-w-[1360px] px-6 sm:px-10 flex items-center justify-between">
         {/* Logo (Velum official logo mark + text) */}
-        <Link href="/" className="flex items-center gap-2.5 group">
+        <Link href="/" className="flex items-center gap-3 group">
           <Image
             src="/velum.png"
             alt="Velum Logo"
-            width={24}
-            height={24}
-            className="h-6 w-6 object-contain transition-transform group-hover:scale-105"
+            width={36}
+            height={36}
+            className="h-9 w-9 object-contain transition-transform group-hover:scale-105"
             priority
           />
-          <span className="font-display text-base font-extrabold tracking-wider text-[#181818]">
+          <span className="font-sans text-xl font-extrabold tracking-tight text-[#181818]">
             VELUM
           </span>
         </Link>

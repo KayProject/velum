@@ -3,11 +3,11 @@ import { SkyBackdrop } from "./SkyBackdrop";
 
 export function TerminalCTA() {
   return (
-    <section id="contact" className="relative overflow-hidden py-24 sm:py-36 border-b border-[#ededed]/60">
+    <section id="contact" className="relative isolate overflow-hidden py-24 sm:py-36 border-b border-[#ededed]/60">
       {/* Dynamic CTA Sky & Clouds */}
       <SkyBackdrop variant="cta" />
 
-      <div className="mx-auto max-w-[1360px] px-6 sm:px-10">
+      <div className="relative z-10 mx-auto max-w-[1360px] px-6 sm:px-10">
         <div className="mx-auto max-w-3xl text-center">
           {/* Tag Pill */}
           <div className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/90 px-3.5 py-1.5 text-xs font-mono text-[#404040] shadow-2xs backdrop-blur-md mb-4">
@@ -16,7 +16,7 @@ export function TerminalCTA() {
           </div>
 
           {/* Headline */}
-          <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#181818] leading-[1.1]">
+          <h2 className="font-sans text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-[#181818] leading-[1.1]">
             Start proving your <br />
             <span className="text-[#059669]">income today</span>
           </h2>

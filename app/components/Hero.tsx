@@ -64,11 +64,11 @@ export function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden pt-12 pb-20 sm:pt-16 sm:pb-32">
+    <section className="relative isolate overflow-hidden pt-12 pb-20 sm:pt-16 sm:pb-32">
       {/* Sky & Multi-layer Animated Parallax Clouds with Technical Grid */}
       <SkyBackdrop variant="hero" />
 
-      <div className="mx-auto max-w-[1360px] px-6 sm:px-10">
+      <div className="relative z-10 mx-auto max-w-[1360px] px-6 sm:px-10">
         <div className="mx-auto max-w-3xl text-center">
           {/* Tag Pill */}
           <div className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/90 px-3.5 py-1.5 text-xs font-mono text-[#404040] shadow-2xs backdrop-blur-md mb-5">
@@ -79,7 +79,7 @@ export function Hero() {
           </div>
 
           {/* Headline */}
-          <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#181818] leading-[1.08]">
+          <h1 className="font-sans text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-[#181818] leading-[1.08]">
             Prove what matters. <br />
             <span className="text-[#059669]">Reveal nothing else.</span>
           </h1>

@@ -8,15 +8,15 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-12 items-start justify-between">
           {/* Left Column: Logo & Tagline */}
           <div className="space-y-4 lg:col-span-6 max-w-sm">
-            <Link href="/" className="flex items-center gap-2.5 group">
+            <Link href="/" className="flex items-center gap-3 group">
               <Image
                 src="/velum.png"
                 alt="Velum Logo"
-                width={24}
-                height={24}
-                className="h-6 w-6 object-contain transition-transform group-hover:scale-105"
+                width={36}
+                height={36}
+                className="h-9 w-9 object-contain transition-transform group-hover:scale-105"
               />
-              <span className="font-display text-base font-extrabold tracking-wider text-[#181818]">
+              <span className="font-sans text-xl font-extrabold tracking-tight text-[#181818]">
                 VELUM
               </span>
             </Link>
