@@ -7,7 +7,8 @@ source, and the sprint repo's open issues. Nothing here is from an aggregator.
 
 ```
 CHAIN_ID     = SN_MAIN  (0x534e5f4d41494e)
-RPC_URL      = https://rpc.starknet.lava.build
+RPC_URL      = https://api.cartridge.gg/x/starknet/mainnet
+# was https://rpc.starknet.lava.build - DISCONTINUED, see the RPC note at the end of this file
 POOL_ADDRESS = 0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a
 ```
 
@@ -182,3 +183,32 @@ https://discovery-service.alpha-mainnet.sw-dev.io      404
 Keep the proxy as a fallback: the `rustls BadRecordMac` failures that plague forge/cast on this
 network can reappear. If an RPC read starts failing intermittently, start the proxy and re-point
 before touching the code.
+
+
+## RPC endpoint change — Sep 7, 2026
+
+`rpc.starknet.lava.build` is gone. It now answers every request, on every path, with:
+
+```
+{"error":"This endpoint has been discontinued.","message":"For an up to date list of available endpoints, visit https://gateway.lavanet.xyz"}
+```
+
+`starknet-mainnet.public.blastapi.io` is gone the same way (redirects you to Alchemy). Of the free
+public endpoints tried, only one answers correctly:
+
+| Endpoint | Result |
+|---|---|
+| **`https://api.cartridge.gg/x/starknet/mainnet`** | **`chainId 0x534e5f4d41494e`, `specVersion 0.10.2` — works** |
+| `https://rpc.starknet.lava.build` | discontinued |
+| `https://starknet-mainnet.public.blastapi.io` | discontinued |
+| `https://free-rpc.nethermind.io/mainnet-juno` | no response |
+| `https://starknet.blockpi.network/v1/rpc/public` | no response |
+| `https://starknet.drpc.org` | `chain is not available on free plan` |
+| `https://1rpc.io/starknet` | no response |
+
+Cartridge serves spec **0.10.2**, and the pinned `starknet@10.0.2` lists `v0_10_2` and `v0_9_0` in
+`SupportedRpcVersion` — so it is a supported pairing, not a tolerated one.
+
+Verified through the local proxy on `:8547`: all three recorded pool transactions return
+`SUCCEEDED` / `ACCEPTED_ON_L1`, `getClassHashAt` on the Velum contract returns the recorded class
+hash, and the pool's live `get_fee_amount()` still reads **6 STRK**.

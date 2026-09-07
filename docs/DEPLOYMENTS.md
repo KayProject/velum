@@ -31,7 +31,7 @@ own dedicated signing account instead.
 Verified post-deploy: `pool()` view call returns the correct pool address. Deployed 2026-08-31 via
 `contracts/scripts/deploy.mjs` (a starknet.js script, not `sncast`) — `sncast declare`/`deploy` always
 probe the RPC with a `"pre_confirmed"`/`"pending"` block_id as part of their own version-compatibility
-check, and this network's `rpc.starknet.lava.build` backend only answers `"latest"`; every sncast
+check, and the RPC backend only answers `"latest"`; every sncast
 attempt failed `Invalid block id` regardless of explicit `--nonce`/`--l1-gas`/etc overrides.
 `deploy.mjs` forces `blockIdentifier: "latest"` on every internal call instead.
 

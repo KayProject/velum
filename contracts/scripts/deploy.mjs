@@ -2,7 +2,7 @@
  * Declare + deploy the Velum contract, bypassing sncast.
  *
  * sncast's declare/deploy always probe the RPC with a "pre_confirmed"/"pending" block_id as part
- * of its own version-compatibility check, and this network's rpc.starknet.lava.build backend
+ * of its own version-compatibility check, and the RPC backend
  * answers neither tag (only "latest") — every sncast declare attempt fails with "Invalid block id"
  * regardless of explicit --nonce/--l1-gas/etc overrides. starknet.js's `blockIdentifier: "latest"`
  * routes every internal call (nonce fetch, fee estimation) through the one tag this RPC actually

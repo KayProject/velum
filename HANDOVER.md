@@ -222,7 +222,10 @@ Do not claim it works if the broadcast still fails.
 
 This network has two independent problems that make direct RPC calls fail:
 1. Intermittent `rustls BadRecordMac` TLS failures against some HTTPS RPC/service hosts.
-2. `rpc.starknet.lava.build`'s Cloudflare WAF bans the default Python `urllib` User-Agent.
+2. `rpc.starknet.lava.build` is **discontinued as of Sep 7, 2026** and answers everything with
+   `"This endpoint has been discontinued."` The mainnet RPC is now
+   `https://api.cartridge.gg/x/starknet/mainnet` (spec 0.10.2, which `starknet@10.0.2` supports).
+   The old WAF/User-Agent problem it had is moot. See `docs/SPIKE.md` for the endpoints ruled out.
 
 Both are worked around by `~/Projects/Inertia/projects/glasshouse/tools/rpcproxy.py`, a plain-HTTP
 local proxy (patched to: preserve request path for REST upstreams, forward auth headers like
@@ -242,7 +245,7 @@ done
 
 Restart whichever are down:
 ```bash
-nohup python3 ~/Projects/Inertia/projects/glasshouse/tools/rpcproxy.py --port 8547 --upstream https://rpc.starknet.lava.build > /tmp/proxy_rpc.log 2>&1 &
+nohup python3 ~/Projects/Inertia/projects/glasshouse/tools/rpcproxy.py --port 8547 --upstream https://api.cartridge.gg/x/starknet/mainnet > /tmp/proxy_rpc.log 2>&1 &
 nohup python3 ~/Projects/Inertia/projects/glasshouse/tools/rpcproxy.py --port 8548 --upstream https://transaction-prover.alpha-mainnet.sw-dev.io > /tmp/proxy_prover.log 2>&1 &
 nohup python3 ~/Projects/Inertia/projects/glasshouse/tools/rpcproxy.py --port 8549 --upstream https://discovery-service.alpha-mainnet.sw-dev.io > /tmp/proxy_discovery.log 2>&1 &
 nohup python3 ~/Projects/Inertia/projects/glasshouse/tools/rpcproxy.py --port 8550 --upstream https://starknet.paymaster.avnu.fi > /tmp/proxy_avnu.log 2>&1 &
