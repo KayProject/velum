@@ -1,19 +1,16 @@
 /**
- * Shield STRK into the STRK20 privacy pool.
+ * Redeem (withdraw) STRK back out of the STRK20 privacy pool, to a public address.
  *
- *   node --experimental-strip-types --env-file=.env.local scripts/shield.ts 20
+ *   node --experimental-strip-types --env-file=.env.local scripts/redeem.ts 1
  *
- * There is no button for this anywhere. `strk20.starknet.io/app` has a shield control whose wallet
- * integration was stripped out (`app-shield.jsx:105-107`), and no mainnet wallet implements the
- * STRK20 wallet API — Braavos answers `Not implemented` to every STRK20 method. So the only way to
- * get a shielded balance is to drive the SDK yourself, which is what this does.
- *
- * Submission does not go through `account.execute()`. The pool's `apply_actions` reads a custom
- * `execution_info.tx_info.proof_facts` field (`privacy.cairo:808`) that a plain signed transaction
- * never carries — it has to arrive through an AVNU paymaster (`paymaster_buildTransaction` /
- * `paymaster_executeTransaction`), which is the only party that can attach it. AVNU fronts the gas
- * and recoups it via a `withdraw` folded into the proof, so the account itself only needs to cover
- * the deposit + protocol fee, not gas.
+ * Every pool operation — shield or redeem — pays the same flat protocol fee (6 STRK on this
+ * deployment, `get_fee_amount()`), reimbursed to the AVNU paymaster via a private withdraw folded
+ * into the same proof (see scripts/shield.ts's header for why a plain `account.execute()` can't
+ * submit this at all). That fee floor applies regardless of how much is being redeemed, so a
+ * redeem below the pool's *existing* private balance would go negative unless it's topped up.
+ * Rather than track exact existing balance (a discovery-service round trip this script skips),
+ * this always folds in a top-up deposit sized to cover the redeem + fee outright — the existing
+ * private balance (if any) just becomes bonus surplus.
  *
  * Your private key is read from `.env.local`, which is gitignored. It is never a command-line
  * argument, because arguments land in your shell history and in `ps` output.
@@ -38,7 +35,6 @@ const STRK = "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d
 
 const DECIMALS = 18n;
 
-/** "1.5" -> 1500000000000000000n. Decimal string in, wei out, no floating point anywhere. */
 function toWei(amount: string): bigint {
   const [whole, fraction = ""] = amount.trim().split(".");
   if (!/^\d+$/.test(whole) || (fraction && !/^\d+$/.test(fraction))) {
@@ -75,12 +71,12 @@ async function callFelt(
 async function main() {
   const amountArg = process.argv[2];
   if (!amountArg) {
-    console.error("usage: shield.ts <amount-in-STRK>   e.g. shield.ts 20");
+    console.error("usage: redeem.ts <amount-in-STRK>   e.g. redeem.ts 1");
     process.exit(2);
   }
 
   const config = env();
-  const depositAmount = toWei(amountArg);
+  const redeemAmount = toWei(amountArg);
 
   const address = required("VELUM_ACCOUNT_ADDRESS");
   const privateKey = required("VELUM_ACCOUNT_PRIVATE_KEY");
@@ -94,24 +90,25 @@ async function main() {
   console.log(`network         ${config.network}`);
   console.log(`account         ${address}`);
   console.log(`pool            ${config.poolAddress}`);
-  console.log(`depositing      ${fromWei(depositAmount)} STRK`);
+  console.log(`redeeming       ${fromWei(redeemAmount)} STRK to self`);
 
   const feeAmount = await callFelt(provider, config.poolAddress, "get_fee_amount");
   console.log(`protocol fee    ${fromWei(feeAmount)} STRK (paid privately, folded into the proof)`);
 
+  // Every client transaction needs at least one WriteOnce action for replay protection
+  // (`privacy.cairo:267-309`) — netting exactly to zero here produces none (no note is
+  // created, nothing is set up), and the tx reverts NO_REPLAY_PROTECTION. Leaving a small
+  // positive surplus makes the compiler auto-create a change note (a WriteOnce), on top of
+  // making this transaction self-sufficient regardless of whatever's already privately shielded.
+  const surplusBuffer = toWei("0.01");
+  const topUpAmount = redeemAmount + feeAmount + surplusBuffer;
+
   const balance = await callFelt(provider, STRK, "balance_of", [address]);
   console.log(`your balance    ${fromWei(balance)} STRK`);
-
-  // Gas is fronted by the paymaster and recouped from the pool, not from this balance — only the
-  // deposit + protocol fee need to be covered here.
-  const needed = depositAmount + feeAmount;
-  if (balance < needed) {
-    throw new Error(`short by ${fromWei(needed - balance)} STRK — you need ${fromWei(needed)}`);
+  if (balance < topUpAmount) {
+    throw new Error(`short by ${fromWei(topUpAmount - balance)} STRK — you need ${fromWei(topUpAmount)}`);
   }
 
-  // The paymaster's validator rejects a proof whose base block is too close to its own view of
-  // head ("too recent" — consistently ~3-4 blocks over, every run) — proving against bare
-  // "latest" is always too fresh by the time it reaches execution. Back off a safety margin.
   const currentBlock = await provider.getBlockLatestAccepted();
   const provingBlock = { block_number: currentBlock.block_number - 10 };
 
@@ -131,7 +128,6 @@ async function main() {
     prover: provingProvider,
     poolContractAddress: config.poolAddress,
     shadowAccountAnonymizerAddress: config.shadowAccountAnonymizerAddress,
-    // One-shot script — nothing to carry across runs beyond what discovery re-fetches each time.
     storage: {
       loadRegistry: async () => createEmptyRegistry(),
       saveRegistry: async () => {},
@@ -152,17 +148,14 @@ async function main() {
     userAddress: address,
   });
 
-  // The paymaster reimburses AVNU for fronting the protocol fee via a private withdraw folded
-  // into this same proof — netted against the deposit before any pre-existing balance is
-  // considered. A first-ever shield has no pre-existing private balance, so the deposit itself
-  // has to cover the fee on top of the amount requested, or the net goes negative with nothing
-  // to draw on.
-  console.log("\nproving and submitting via the AVNU paymaster — this takes around 30 seconds, it has not hung");
+  console.log(`\ntopping up ${fromWei(topUpAmount)} STRK (redeem + fee + surplus buffer) and redeeming in one proof`);
+  console.log("proving and submitting via the AVNU paymaster — this takes around 30 seconds, it has not hung");
   const { transaction_hash } = await wallet.strk20InvokeTransaction([
-    { type: "deposit", token: STRK, amount: (depositAmount + feeAmount).toString() },
+    { type: "deposit", token: STRK, amount: topUpAmount.toString() },
+    { type: "withdraw", token: STRK, amount: redeemAmount.toString(), recipient: address },
   ]);
 
-  console.log(`\nshielded. transaction: ${transaction_hash}`);
+  console.log(`\nredeemed. transaction: ${transaction_hash}`);
   console.log(`https://voyager.online/tx/${transaction_hash}`);
   console.log("\nThis hash touches the pool, so it counts as one of the three that strk20.json needs.");
 }
