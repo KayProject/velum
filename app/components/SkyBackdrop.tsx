@@ -108,12 +108,6 @@ export function SkyBackdrop({ variant = "hero" }: { variant?: Variant }) {
         }
       />
 
-      {/* Atmospheric Cloud Texture Backdrop */}
-      <div
-        className="absolute inset-0 bg-cover bg-top opacity-55 mix-blend-overlay"
-        style={{ backgroundImage: "url('/images/clouds-bg.png')" }}
-      />
-
       {/* Warm Sunlight Glow from Top-Left */}
       <div className="absolute -left-1/4 -top-1/3 h-[150%] w-[100%] rotate-12 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.95),transparent_65%)]" />
 
