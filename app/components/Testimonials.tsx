@@ -56,7 +56,7 @@ export function Testimonials() {
                   <span className="font-mono text-xs font-bold text-[#181818]">
                     {r.score}
                   </span>
-                  <div className="flex text-[#10b981] text-xs">
+                  <div className="flex text-[#3b82f6] text-xs">
                     ★★★★★
                   </div>
                 </div>

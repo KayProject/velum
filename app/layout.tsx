@@ -33,7 +33,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${jetbrainsMono.variable} scroll-smooth`}
     >
-      <body className="min-h-screen bg-[#fafafa] text-[#121316] font-sans antialiased selection:bg-[#10b981]/20 selection:text-[#065f46]">
+      <body className="min-h-screen bg-[#fafafa] text-[#121316] font-sans antialiased selection:bg-[#3b82f6]/20 selection:text-[#1e40af]">
         {children}
       </body>
     </html>

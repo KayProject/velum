@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Lightning } from "@phosphor-icons/react";
 
 export function HowItWorks() {
   const [activeStep, setActiveStep] = useState(0);
@@ -16,7 +17,7 @@ export function HowItWorks() {
         <div className="rounded-2xl border border-[#ededed] bg-white p-4 space-y-3 font-mono text-xs shadow-xs">
           <div className="flex justify-between items-center text-[11px] pb-2 border-b border-[#ededed]">
             <span className="text-[#858585]">CONFIG://EARNER_CLAIM</span>
-            <span className="text-[#059669] font-bold">READY</span>
+            <span className="text-[#2563eb] font-bold">READY</span>
           </div>
           <div className="grid grid-cols-2 gap-2 text-[11px]">
             <div className="p-2 rounded bg-[#f6f6f6]">
@@ -28,9 +29,9 @@ export function HowItWorks() {
               <span className="text-[#181818] font-semibold">2026-Q1</span>
             </div>
           </div>
-          <div className="p-2.5 rounded-lg bg-[#ecfdf5] border border-[#a7f3d0] flex justify-between items-center text-[11px]">
-            <span className="text-[#047857]">Floor Threshold:</span>
-            <span className="font-bold text-[#065f46]">₦4,200,000 NGN</span>
+          <div className="p-2.5 rounded-lg bg-[#eff6ff] border border-[#bfdbfe] flex justify-between items-center text-[11px]">
+            <span className="text-[#1d4ed8]">Floor Threshold:</span>
+            <span className="font-bold text-[#1e40af]">₦4,200,000 NGN</span>
           </div>
         </div>
       ),
@@ -42,12 +43,14 @@ export function HowItWorks() {
       bubble: "Executing poseidon threshold circuit over 3 private STRK20 attestations...",
       status: "Virtual block proven on client (0ms gas)...",
       renderVisual: () => (
-        <div className="rounded-2xl border border-[#10b981]/40 bg-[#f0fdf4]/80 p-4 space-y-3 font-mono text-xs shadow-xs">
-          <div className="flex justify-between items-center text-[11px] pb-2 border-b border-[#a7f3d0]">
-            <span className="text-[#047857]">⚡ CAIRO_VM_VIRTUAL_BLOCK</span>
-            <span className="text-[#059669] font-bold animate-pulse">PROVING</span>
+        <div className="rounded-2xl border border-[#3b82f6]/40 bg-[#eff6ff]/80 p-4 space-y-3 font-mono text-xs shadow-xs">
+          <div className="flex justify-between items-center text-[11px] pb-2 border-b border-[#bfdbfe]">
+            <span className="inline-flex items-center gap-1 text-[#1d4ed8]">
+              <Lightning size={12} weight="bold" /> CAIRO_VM_VIRTUAL_BLOCK
+            </span>
+            <span className="text-[#2563eb] font-bold animate-pulse">PROVING</span>
           </div>
-          <div className="space-y-1.5 text-[11px] text-[#065f46]">
+          <div className="space-y-1.5 text-[11px] text-[#1e40af]">
             <div className="flex justify-between">
               <span>Attestation 1 (Jan 2026):</span>
               <span>1,400,000 ✓</span>
@@ -61,7 +64,7 @@ export function HowItWorks() {
               <span>1,400,000 ✓</span>
             </div>
           </div>
-          <div className="pt-1.5 border-t border-[#a7f3d0] flex justify-between items-center text-[11px] font-bold text-[#059669]">
+          <div className="pt-1.5 border-t border-[#bfdbfe] flex justify-between items-center text-[11px] font-bold text-[#2563eb]">
             <span>Aggregate Sum:</span>
             <span>₦4,200,000 &gt;= ₦4,200,000 (Pass)</span>
           </div>
@@ -71,25 +74,25 @@ export function HowItWorks() {
     {
       badge: "STEP 3",
       title: "Verifier checks link",
-      desc: "The verifier opens the single-use URL on any phone or browser. One green line verifies the claim; the link cannot be replayed.",
-      bubble: "🟢 Verified: Qualifying income exceeded ₦4,200,000 for 2026-Q1. No records leaked.",
+      desc: "The verifier opens the single-use URL on any phone or browser. One verified line confirms the claim; the link cannot be replayed.",
+      bubble: "Verified: Qualifying income exceeded ₦4,200,000 for 2026-Q1. No records leaked.",
       status: "Verified & Locked against replay ✓",
       renderVisual: () => (
         <div className="rounded-2xl border border-[#ededed] bg-white p-5 space-y-3.5 shadow-sm text-center">
-          <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#10b981] text-white text-lg font-bold mx-auto shadow-xs">
+          <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#3b82f6] text-white text-lg font-bold mx-auto shadow-xs">
             ✓
           </div>
           <div>
             <h4 className="font-display font-bold text-sm text-[#181818]">
               Income Requirement Satisfied
             </h4>
-            <p className="font-mono text-[11px] text-[#059669] mt-0.5">
+            <p className="font-mono text-[11px] text-[#2563eb] mt-0.5">
               Acme DAO · 2026-Q1 &gt;= ₦4,200,000
             </p>
           </div>
           <div className="rounded-lg bg-[#fafafa] border border-[#f0f0f0] p-2 font-mono text-[10px] text-[#858585] flex justify-between">
             <span>Verifier: Meridian Ltd</span>
-            <span className="text-[#059669]">Single-Use Token Valid</span>
+            <span className="text-[#2563eb]">Single-Use Token Valid</span>
           </div>
         </div>
       ),
@@ -107,7 +110,7 @@ export function HowItWorks() {
 
           <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#181818] leading-[1.15]">
             Turn confidential earnings into <br />
-            <span className="text-[#059669]">ready-to-use claims in seconds</span>
+            <span className="text-[#2563eb]">ready-to-use claims in seconds</span>
           </h2>
 
           <p className="mt-4 text-sm sm:text-base text-[#686868] max-w-xl mx-auto">

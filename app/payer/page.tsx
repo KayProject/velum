@@ -12,6 +12,7 @@ import {
   PayerEnrolment,
 } from "@/lib/velum/store";
 import { deriveChannelKey, deriveRecipientTag, formatTag } from "@/lib/velum/channel";
+import { Lightning, WarningCircle, LockKey } from "@phosphor-icons/react";
 
 export default function PayerConsolePage() {
   const [activeTab, setActiveTab] = useState<"single" | "batch" | "enrol" | "ledger">("single");
@@ -164,7 +165,7 @@ export default function PayerConsolePage() {
           <div className="flex items-center gap-4">
             <Link
               href="/app"
-              className="text-xs font-semibold text-[#059669] hover:underline"
+              className="text-xs font-semibold text-[#2563eb] hover:underline"
             >
               Switch to Earner Portal →
             </Link>
@@ -291,9 +292,15 @@ export default function PayerConsolePage() {
                     <button
                       type="button"
                       onClick={() => setShowTagDeriver(!showTagDeriver)}
-                      className="text-[11px] font-mono text-[#2563eb] hover:underline"
+                      className="inline-flex items-center gap-1 text-[11px] font-mono text-[#2563eb] hover:underline"
                     >
-                      {showTagDeriver ? "Hide Derivation Helper" : "⚡ Open Derivation Helper"}
+                      {showTagDeriver ? (
+                        "Hide Derivation Helper"
+                      ) : (
+                        <>
+                          <Lightning size={11} weight="bold" /> Open Derivation Helper
+                        </>
+                      )}
                     </button>
                   </div>
 
@@ -416,7 +423,7 @@ export default function PayerConsolePage() {
               </form>
 
               {submitSuccess && (
-                <div className="mt-4 rounded-lg bg-[#ecfdf5] border border-[#a7f3d0] p-3 text-xs font-medium text-[#047857]">
+                <div className="mt-4 rounded-lg bg-[#eff6ff] border border-[#bfdbfe] p-3 text-xs font-medium text-[#1d4ed8]">
                   {submitSuccess}
                 </div>
               )}
@@ -486,8 +493,8 @@ export default function PayerConsolePage() {
             </div>
 
             {batchError && (
-              <div className="mt-3 rounded-lg bg-[#fef2f2] border border-[#fecaca] p-3 font-mono text-xs text-[#b91c1c]">
-                ⚠️ {batchError}
+              <div className="flex items-center gap-1.5 mt-3 rounded-lg bg-[#fef2f2] border border-[#fecaca] p-3 font-mono text-xs text-[#b91c1c]">
+                <WarningCircle size={14} weight="bold" className="shrink-0" /> {batchError}
               </div>
             )}
 
@@ -502,7 +509,7 @@ export default function PayerConsolePage() {
                 {parsedBatch.map((entry, idx) => (
                   <div key={idx} className="px-4 py-3 flex items-center justify-between text-xs font-mono">
                     <span className="text-[#111827] truncate max-w-xs">{entry.recipientTag}</span>
-                    <span className="font-bold text-[#059669]">
+                    <span className="font-bold text-[#2563eb]">
                       ₦{Number(entry.amount).toLocaleString()} ({entry.token})
                     </span>
                     <span className="text-[#71717a]">{entry.windowPeriod}</span>
@@ -526,7 +533,7 @@ export default function PayerConsolePage() {
             </div>
 
             {batchSuccess && (
-              <div className="mt-4 rounded-lg bg-[#ecfdf5] border border-[#a7f3d0] p-3 text-xs font-medium text-[#047857]">
+              <div className="mt-4 rounded-lg bg-[#eff6ff] border border-[#bfdbfe] p-3 text-xs font-medium text-[#1d4ed8]">
                 {batchSuccess}
               </div>
             )}
@@ -584,13 +591,13 @@ export default function PayerConsolePage() {
               </form>
 
               {enrolError && (
-                <div className="mt-4 rounded-lg bg-[#fef2f2] border border-[#fecaca] p-3 text-xs font-mono text-[#b91c1c]">
-                  ⚠️ {enrolError}
+                <div className="flex items-center gap-1.5 mt-4 rounded-lg bg-[#fef2f2] border border-[#fecaca] p-3 text-xs font-mono text-[#b91c1c]">
+                  <WarningCircle size={14} weight="bold" className="shrink-0" /> {enrolError}
                 </div>
               )}
 
               {enrolSuccess && (
-                <div className="mt-4 rounded-lg bg-[#ecfdf5] border border-[#a7f3d0] p-3 text-xs font-medium text-[#047857]">
+                <div className="mt-4 rounded-lg bg-[#eff6ff] border border-[#bfdbfe] p-3 text-xs font-medium text-[#1d4ed8]">
                   {enrolSuccess}
                 </div>
               )}
@@ -622,8 +629,9 @@ export default function PayerConsolePage() {
                 </div>
               </div>
 
-              <div className="mt-6 rounded-xl bg-[#fafafa] border border-[#e4e4e7] p-3 font-mono text-[11px] text-[#71717a]">
-                🔒 Payers who do not enrol appear on verifier claims as &quot;Self-Declared, Unattested&quot;.
+              <div className="flex items-start gap-1.5 mt-6 rounded-xl bg-[#fafafa] border border-[#e4e4e7] p-3 font-mono text-[11px] text-[#71717a]">
+                <LockKey size={14} weight="bold" className="shrink-0 mt-0.5" />
+                Payers who do not enrol appear on verifier claims as &quot;Self-Declared, Unattested&quot;.
               </div>
             </div>
           </div>
@@ -658,7 +666,7 @@ export default function PayerConsolePage() {
                         {att.payerName || "Unenrolled Payer"}
                       </span>
                     </div>
-                    <span className="rounded bg-[#ecfdf5] border border-[#a7f3d0] px-2 py-0.5 font-mono text-[10px] font-semibold text-[#047857]">
+                    <span className="rounded bg-[#eff6ff] border border-[#bfdbfe] px-2 py-0.5 font-mono text-[10px] font-semibold text-[#1d4ed8]">
                       COMMITTED
                     </span>
                   </div>

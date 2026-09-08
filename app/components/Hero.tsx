@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { SkyBackdrop } from "./SkyBackdrop";
+import { CheckCircle, Lightning, LockKey, Check, Copy, Sparkle } from "@phosphor-icons/react";
 
 export function Hero() {
   const [prompt, setPrompt] = useState("Prove qualifying income >= ₦4,200,000 in 2026-Q1 from Acme DAO");
@@ -18,7 +19,8 @@ export function Hero() {
       period: "2026-Q1 (Jan–Mar)",
       threshold: "₦4,200,000",
       attestations: "3/3 Signed",
-      status: "🟢 Threshold Met (₦4,200,000)",
+      statusIcon: CheckCircle,
+      status: "Threshold Met (₦4,200,000)",
     },
     {
       label: "Payer Tag",
@@ -27,7 +29,8 @@ export function Hero() {
       period: "March 2026",
       threshold: "₦1,400,000",
       attestations: "1/1 Emitted",
-      status: "🟢 Attestation Signed On-Chain",
+      statusIcon: CheckCircle,
+      status: "Attestation Signed On-Chain",
     },
     {
       label: "Virtual Block",
@@ -36,7 +39,8 @@ export function Hero() {
       period: "0ms Gas / Client Virtual Block",
       threshold: "₦4,200,000",
       attestations: "3 Attestations Aggregated",
-      status: "⚡ Zero Calldata Leaked",
+      statusIcon: Lightning,
+      status: "Zero Calldata Leaked",
     },
     {
       label: "Landlord Verify",
@@ -45,7 +49,8 @@ export function Hero() {
       period: "Expires in 48 Hours",
       threshold: "Single-Use Bound",
       attestations: "1 Replay Guard",
-      status: "🔒 Valid & Uncorrelatable",
+      statusIcon: LockKey,
+      status: "Valid & Uncorrelatable",
     },
   ];
 
@@ -70,18 +75,10 @@ export function Hero() {
 
       <div className="relative z-10 mx-auto max-w-[1360px] px-6 sm:px-10">
         <div className="mx-auto max-w-3xl text-center">
-          {/* Tag Pill */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/90 px-3.5 py-1.5 text-xs font-mono text-[#404040] shadow-2xs backdrop-blur-md mb-5">
-            <span className="h-2 w-2 rounded-full bg-[#10b981] animate-pulse" />
-            <span>STRK20 Private Sprint</span>
-            <span className="text-[#a3a3a3]">|</span>
-            <span className="text-[#737373]">Cairo ZK Proof Layer</span>
-          </div>
-
           {/* Headline */}
           <h1 className="font-sans text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-[#181818] leading-[1.08]">
             Prove what matters. <br />
-            <span className="text-[#059669]">Reveal nothing else.</span>
+            <span className="text-[#2563eb]">Reveal nothing else.</span>
           </h1>
 
           {/* Subtitle */}
@@ -115,7 +112,7 @@ export function Hero() {
           {/* Floating Prompt Bar */}
           <div className="relative z-20 mx-auto max-w-2xl rounded-2xl border border-white/90 bg-white/95 p-3.5 sm:p-4 shadow-[0_16px_48px_rgba(0,0,0,0.08)] backdrop-blur-md">
             <div className="flex items-center gap-3">
-              <span className="text-[#10b981] text-sm">✦</span>
+              <Sparkle size={16} weight="fill" className="text-[#3b82f6] shrink-0" />
               <input
                 type="text"
                 value={prompt}
@@ -165,7 +162,7 @@ export function Hero() {
                   velum.app/earner/preview · SN_MAINNET
                 </span>
               </div>
-              <div className="flex items-center gap-2 font-mono text-[10px] text-[#059669] bg-[#ecfdf5] border border-[#a7f3d0] px-2 py-0.5 rounded-full">
+              <div className="flex items-center gap-2 font-mono text-[10px] text-[#2563eb] bg-[#eff6ff] border border-[#bfdbfe] px-2 py-0.5 rounded-full">
                 <span>0x0403...812a</span>
                 <span>[STRK20 POOL]</span>
               </div>
@@ -177,7 +174,7 @@ export function Hero() {
               <div className="hidden sm:block sm:col-span-4 border-r border-[#ededed]/70 pr-4 space-y-3 font-sans">
                 <div className="flex items-center justify-between rounded-lg bg-[#f6f6f6] px-3 py-2 text-xs font-semibold text-[#181818]">
                   <span>Claim Parameters</span>
-                  <span className="font-mono text-[10px] text-[#059669]">LIVE</span>
+                  <span className="font-mono text-[10px] text-[#2563eb]">LIVE</span>
                 </div>
                 
                 <div className="space-y-2 pt-1 font-mono text-[11px]">
@@ -191,7 +188,7 @@ export function Hero() {
                   </div>
                   <div className="p-2 rounded-lg bg-[#fafafa] border border-[#f0f0f0]">
                     <span className="text-[#858585] block text-[10px]">MIN THRESHOLD</span>
-                    <span className="font-bold text-[#059669]">{currentChip.threshold}</span>
+                    <span className="font-bold text-[#2563eb]">{currentChip.threshold}</span>
                   </div>
                 </div>
               </div>
@@ -204,7 +201,7 @@ export function Hero() {
                     <span className="font-mono text-xs font-semibold text-[#181818]">
                       Virtual Block Execution Trace
                     </span>
-                    <span className="font-mono text-[10px] text-[#059669] bg-[#ecfdf5] px-2 py-0.5 rounded">
+                    <span className="font-mono text-[10px] text-[#2563eb] bg-[#eff6ff] px-2 py-0.5 rounded">
                       {currentChip.attestations}
                     </span>
                   </div>
@@ -217,42 +214,53 @@ export function Hero() {
                     </div>
                     <div className="flex items-center justify-between text-[11px]">
                       <span className="text-[#686868]">Poseidon Derivation</span>
-                      <span className="text-[#059669]">h(tag, recipient, vk) ✓</span>
+                      <span className="text-[#2563eb]">h(tag, recipient, vk) ✓</span>
                     </div>
                     <div className="flex items-center justify-between text-[11px] pt-1 border-t border-[#ededed]/60">
                       <span className="text-[#686868]">Threshold Status</span>
-                      <span className="font-semibold text-[#059669]">{currentChip.status}</span>
+                      <span className="inline-flex items-center gap-1 font-semibold text-[#2563eb]">
+                        <currentChip.statusIcon size={12} weight="bold" />
+                        {currentChip.status}
+                      </span>
                     </div>
                   </div>
 
                   {/* Generating Status Badge */}
                   <div className="pt-1 flex items-center justify-between">
-                    <div className="inline-flex items-center gap-2 rounded-lg bg-[#10b981]/10 px-3 py-1 text-xs font-mono font-medium text-[#059669] border border-[#10b981]/20">
-                      <span className={`h-1.5 w-1.5 rounded-full bg-[#10b981] ${proving ? "animate-ping" : "animate-pulse"}`} />
+                    <div className="inline-flex items-center gap-2 rounded-lg bg-[#3b82f6]/10 px-3 py-1 text-xs font-mono font-medium text-[#2563eb] border border-[#3b82f6]/20">
+                      <span className={`h-1.5 w-1.5 rounded-full bg-[#3b82f6] ${proving ? "animate-ping" : "animate-pulse"}`} />
                       <span>{proving ? "evaluating virtual block proof..." : "client virtual block proven · 0 calldata leaked"}</span>
                     </div>
 
                     <button
                       type="button"
                       onClick={handleCopyLink}
-                      className="inline-flex items-center gap-1 text-[11px] font-mono text-[#181818] hover:text-[#059669] bg-white border border-[#ededed] px-2.5 py-1 rounded-md shadow-2xs hover:bg-[#f6f6f6]"
+                      className="inline-flex items-center gap-1 text-[11px] font-mono text-[#181818] hover:text-[#2563eb] bg-white border border-[#ededed] px-2.5 py-1 rounded-md shadow-2xs hover:bg-[#f6f6f6]"
                     >
-                      <span>{copied ? "✓ Copied!" : "📋 Copy Verifier Link"}</span>
+                      {copied ? (
+                        <>
+                          <Check size={12} weight="bold" /> Copied!
+                        </>
+                      ) : (
+                        <>
+                          <Copy size={12} weight="bold" /> Copy Verifier Link
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>
 
                 {/* Bottom Verifier Preview Bar */}
-                <div className="rounded-xl border border-[#ecfdf5] bg-[#f0fdf4] p-3 text-xs flex items-center justify-between">
+                <div className="rounded-xl border border-[#eff6ff] bg-[#eff6ff] p-3 text-xs flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#10b981] text-white text-[11px] font-bold">
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#3b82f6] text-white text-[11px] font-bold">
                       ✓
                     </span>
-                    <span className="font-medium text-[#065f46] text-[11px] sm:text-xs">
+                    <span className="font-medium text-[#1e40af] text-[11px] sm:text-xs">
                       Single-use claim generated: Landlord receives 1-line verified assertion
                     </span>
                   </div>
-                  <Link href="/v/demo" className="font-mono text-[11px] font-semibold text-[#059669] hover:underline">
+                  <Link href="/v/demo" className="font-mono text-[11px] font-semibold text-[#2563eb] hover:underline">
                     View Portal →
                   </Link>
                 </div>

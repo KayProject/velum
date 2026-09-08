@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { getEnrolments, enrolPayer, PayerEnrolment } from "@/lib/velum/store";
+import { WarningCircle, LockKey } from "@phosphor-icons/react";
 
 export default function PayerEnrolPage() {
   const [enrolName, setEnrolName] = useState("");
@@ -106,13 +107,13 @@ export default function PayerEnrolPage() {
             </form>
 
             {error && (
-              <div className="mt-4 rounded-lg bg-[#fef2f2] border border-[#fecaca] p-3 text-xs font-mono text-[#b91c1c]">
-                ⚠️ {error}
+              <div className="flex items-center gap-1.5 mt-4 rounded-lg bg-[#fef2f2] border border-[#fecaca] p-3 text-xs font-mono text-[#b91c1c]">
+                <WarningCircle size={14} weight="bold" className="shrink-0" /> {error}
               </div>
             )}
 
             {success && (
-              <div className="mt-4 rounded-lg bg-[#ecfdf5] border border-[#a7f3d0] p-3 text-xs font-medium text-[#047857]">
+              <div className="mt-4 rounded-lg bg-[#eff6ff] border border-[#bfdbfe] p-3 text-xs font-medium text-[#1d4ed8]">
                 {success}
               </div>
             )}
@@ -143,8 +144,9 @@ export default function PayerEnrolPage() {
               </div>
             </div>
 
-            <div className="mt-6 rounded-xl bg-[#fafafa] border border-[#e4e4e7] p-3 font-mono text-[11px] text-[#71717a]">
-              🔒 Payer enrolments prevent impersonation. Unregistered payers are displayed to landlords as self-declared.
+            <div className="flex items-start gap-1.5 mt-6 rounded-xl bg-[#fafafa] border border-[#e4e4e7] p-3 font-mono text-[11px] text-[#71717a]">
+              <LockKey size={14} weight="bold" className="shrink-0 mt-0.5" />
+              Payer enrolments prevent impersonation. Unregistered payers are displayed to landlords as self-declared.
             </div>
           </div>
         </div>

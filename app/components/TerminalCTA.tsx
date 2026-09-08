@@ -11,14 +11,14 @@ export function TerminalCTA() {
         <div className="mx-auto max-w-3xl text-center">
           {/* Tag Pill */}
           <div className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/90 px-3.5 py-1.5 text-xs font-mono text-[#404040] shadow-2xs backdrop-blur-md mb-4">
-            <span className="h-2 w-2 rounded-full bg-[#10b981]" />
+            <span className="h-2 w-2 rounded-full bg-[#3b82f6]" />
             <span>[ ready to start? ]</span>
           </div>
 
           {/* Headline */}
           <h2 className="font-sans text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-[#181818] leading-[1.1]">
             Start proving your <br />
-            <span className="text-[#059669]">income today</span>
+            <span className="text-[#2563eb]">income today</span>
           </h2>
 
           <p className="mt-6 text-sm sm:text-base md:text-lg leading-relaxed text-[#525252] max-w-2xl mx-auto">

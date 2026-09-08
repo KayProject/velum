@@ -17,7 +17,7 @@ export default function EarnerClaimsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] flex flex-col justify-between selection:bg-[#10b981]/20 selection:text-[#065f46]">
+    <div className="min-h-screen bg-[#fafafa] flex flex-col justify-between selection:bg-[#3b82f6]/20 selection:text-[#1e40af]">
       <header className="border-b border-[#e4e4e7] bg-white/90 backdrop-blur-md px-6 py-4">
         <div className="mx-auto flex max-w-4xl items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
@@ -27,7 +27,7 @@ export default function EarnerClaimsPage() {
             <span className="font-display text-lg font-bold text-[#111827]">
               Velum
             </span>
-            <span className="font-mono text-[10px] text-[#059669] bg-[#ecfdf5] border border-[#a7f3d0] px-2 py-0.5 rounded-full font-semibold">
+            <span className="font-mono text-[10px] text-[#2563eb] bg-[#eff6ff] border border-[#bfdbfe] px-2 py-0.5 rounded-full font-semibold">
               ISSUED CLAIMS REGISTRY
             </span>
           </Link>
@@ -45,7 +45,7 @@ export default function EarnerClaimsPage() {
         <div className="rounded-2xl border border-[#e4e4e7] bg-white p-6 sm:p-8 shadow-sm">
           <div className="flex items-center justify-between border-b border-[#f4f4f5] pb-4 mb-6">
             <div>
-              <span className="font-mono text-xs font-semibold uppercase tracking-widest text-[#059669]">
+              <span className="font-mono text-xs font-semibold uppercase tracking-widest text-[#2563eb]">
                 [ Slice 3 · T048 / FR-010 ]
               </span>
               <h1 className="mt-1 font-display text-2xl font-bold text-[#111827]">
@@ -72,7 +72,7 @@ export default function EarnerClaimsPage() {
                       <span
                         className={`rounded-full px-2.5 py-0.5 font-mono text-[10px] font-bold ${
                           claim.status === "ACTIVE"
-                            ? "bg-[#ecfdf5] text-[#047857] border border-[#a7f3d0]"
+                            ? "bg-[#eff6ff] text-[#1d4ed8] border border-[#bfdbfe]"
                             : claim.status === "REDEEMED"
                             ? "bg-[#eff6ff] text-[#1d4ed8] border border-[#bfdbfe]"
                             : claim.status === "REVOKED"

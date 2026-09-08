@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { CheckCircle } from "@phosphor-icons/react";
 
 export function ProofSimulator() {
   const [query, setQuery] = useState("Qualifying income exceeded ₦4,200,000 in 2026-Q1");
@@ -86,7 +87,7 @@ export function ProofSimulator() {
         <div className="space-y-4 lg:col-span-6 rounded-2xl border border-[#ededed] bg-[#f9f9f9] p-4 sm:p-5">
           <div className="flex items-center justify-between border-b border-[#ededed] pb-3">
             <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[#10b981] animate-pulse" />
+              <span className="h-2 w-2 rounded-full bg-[#3b82f6] animate-pulse" />
               <span className="font-mono text-xs font-semibold text-[#181818]">
                 CLAIM CONFIGURATION
               </span>
@@ -163,7 +164,7 @@ export function ProofSimulator() {
               className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#181818] py-2.5 text-xs font-medium text-white transition-all hover:bg-[#2b2b2b] active:scale-95"
             >
               <span>Execute Prove Transaction</span>
-              <span className="font-mono text-[10px] text-[#10b981]">→ 1 Tx</span>
+              <span className="font-mono text-[10px] text-[#3b82f6]">→ 1 Tx</span>
             </button>
           </div>
         </div>
@@ -173,15 +174,15 @@ export function ProofSimulator() {
           <div>
             <div className="flex items-center justify-between border-b border-[#ededed] pb-3">
               <div className="flex items-center gap-2">
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#10b981]/15 text-[#10b981] text-xs font-bold">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#3b82f6]/15 text-[#3b82f6] text-xs font-bold">
                   ✓
                 </span>
                 <span className="font-mono text-xs font-semibold text-[#181818]">
                   VERIFIER VIEWPORT
                 </span>
               </div>
-              <span className="rounded-full bg-[#10b981]/10 px-2.5 py-0.5 font-mono text-[10px] font-semibold text-[#059669] border border-[#10b981]/25">
-                🟢 VERIFIED
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#3b82f6]/10 px-2.5 py-0.5 font-mono text-[10px] font-semibold text-[#2563eb] border border-[#3b82f6]/25">
+                <CheckCircle size={11} weight="bold" /> VERIFIED
               </span>
             </div>
 
@@ -191,12 +192,12 @@ export function ProofSimulator() {
               </div>
               <p className="font-display text-sm font-semibold leading-relaxed text-[#181818]">
                 Qualifying income from{" "}
-                <span className="text-[#059669] font-bold">{payer}</span> exceeded{" "}
-                <span className="text-[#059669] font-bold">
+                <span className="text-[#2563eb] font-bold">{payer}</span> exceeded{" "}
+                <span className="text-[#2563eb] font-bold">
                   {threshold.includes("$") || threshold.includes("€") ? threshold : `₦${threshold}`}
                 </span>{" "}
                 between{" "}
-                <span className="underline decoration-[#10b981]/50 underline-offset-2">
+                <span className="underline decoration-[#3b82f6]/50 underline-offset-2">
                   {period === "2026-Q1"
                     ? "1 Jan and 31 Mar 2026"
                     : period === "2025-Q4"
@@ -208,7 +209,7 @@ export function ProofSimulator() {
               
               <div className="mt-4 pt-3 border-t border-[#f4f4f5] flex items-center justify-between text-[11px] text-[#686868]">
                 <span>No other financial records disclosed.</span>
-                <span className="font-mono text-[#059669] font-medium">Expires in 18 days</span>
+                <span className="font-mono text-[#2563eb] font-medium">Expires in 18 days</span>
               </div>
             </div>
           </div>

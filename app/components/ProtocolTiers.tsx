@@ -144,7 +144,7 @@ export function ProtocolTiers() {
                 <ul className="mt-6 space-y-3.5">
                   {p.features.map((f, fi) => (
                     <li key={fi} className="flex items-center gap-2.5 text-xs text-[#686868]">
-                      <span className="text-[#10b981] font-bold">✓</span>
+                      <span className="text-[#3b82f6] font-bold">✓</span>
                       <span>{f}</span>
                     </li>
                   ))}

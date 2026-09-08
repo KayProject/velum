@@ -16,6 +16,7 @@ import {
   computeEarnerHandle,
   computeChallengeHash,
 } from "@/lib/velum/hashes";
+import { WarningCircle, Prohibit, CheckCircle } from "@phosphor-icons/react";
 
 export default function EarnerPortalPage() {
   const [activeTab, setActiveTab] = useState<"builder" | "claims">("builder");
@@ -156,7 +157,7 @@ export default function EarnerPortalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] flex flex-col justify-between selection:bg-[#10b981]/20 selection:text-[#065f46]">
+    <div className="min-h-screen bg-[#fafafa] flex flex-col justify-between selection:bg-[#3b82f6]/20 selection:text-[#1e40af]">
       {/* Top Navbar */}
       <header className="border-b border-[#e4e4e7] bg-white/90 backdrop-blur-md px-6 py-4 sticky top-0 z-30">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
@@ -167,7 +168,7 @@ export default function EarnerPortalPage() {
             <span className="font-display text-lg font-bold text-[#111827]">
               Velum
             </span>
-            <span className="font-mono text-[10px] text-[#059669] bg-[#ecfdf5] border border-[#a7f3d0] px-2 py-0.5 rounded-full font-semibold">
+            <span className="font-mono text-[10px] text-[#2563eb] bg-[#eff6ff] border border-[#bfdbfe] px-2 py-0.5 rounded-full font-semibold">
               EARNER PORTAL
             </span>
           </Link>
@@ -194,7 +195,7 @@ export default function EarnerPortalPage() {
         {/* Intro */}
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <span className="font-mono text-xs font-semibold uppercase tracking-widest text-[#059669]">
+            <span className="font-mono text-xs font-semibold uppercase tracking-widest text-[#2563eb]">
               [ Confidential Claim Builder · Zero-Custody ]
             </span>
             <h1 className="mt-1 font-display text-2xl sm:text-3xl font-bold tracking-tight text-[#111827]">
@@ -249,7 +250,7 @@ export default function EarnerPortalPage() {
                     <label className="font-mono text-xs font-bold text-[#111827]">
                       01 // VIEWING KEY / PASSPHRASE
                     </label>
-                    <span className="font-mono text-[10px] text-[#059669]">
+                    <span className="font-mono text-[10px] text-[#2563eb]">
                       ● In-Memory Only (FR-006)
                     </span>
                   </div>
@@ -262,7 +263,7 @@ export default function EarnerPortalPage() {
                     value={passphrase}
                     onChange={(e) => setPassphrase(e.target.value)}
                     placeholder="Enter your confidential account viewing passphrase"
-                    className="mt-3 w-full rounded-lg border border-[#e4e4e7] bg-white px-3.5 py-2.5 text-xs font-mono text-[#111827] focus:border-[#10b981] focus:outline-none"
+                    className="mt-3 w-full rounded-lg border border-[#e4e4e7] bg-white px-3.5 py-2.5 text-xs font-mono text-[#111827] focus:border-[#3b82f6] focus:outline-none"
                   />
                 </div>
 
@@ -282,7 +283,7 @@ export default function EarnerPortalPage() {
                   <select
                     value={selectedPayerAddress}
                     onChange={(e) => setSelectedPayerAddress(e.target.value)}
-                    className="mt-2 w-full rounded-lg border border-[#e4e4e7] bg-white px-3.5 py-2.5 text-xs font-medium text-[#111827] focus:border-[#10b981] focus:outline-none"
+                    className="mt-2 w-full rounded-lg border border-[#e4e4e7] bg-white px-3.5 py-2.5 text-xs font-medium text-[#111827] focus:border-[#3b82f6] focus:outline-none"
                   >
                     {enrolments.map((enr) => (
                       <option key={enr.address} value={enr.address}>
@@ -304,7 +305,7 @@ export default function EarnerPortalPage() {
                     <select
                       value={windowPeriod}
                       onChange={(e) => setWindowPeriod(e.target.value)}
-                      className="mt-2 w-full rounded-lg border border-[#e4e4e7] bg-white px-3.5 py-2.5 text-xs font-medium text-[#111827] focus:border-[#10b981] focus:outline-none"
+                      className="mt-2 w-full rounded-lg border border-[#e4e4e7] bg-white px-3.5 py-2.5 text-xs font-medium text-[#111827] focus:border-[#3b82f6] focus:outline-none"
                     >
                       <option value="2026-Q1">Jan 1 – Mar 31, 2026 (Q1)</option>
                       <option value="2025-Q4">Oct 1 – Dec 31, 2025 (Q4)</option>
@@ -344,12 +345,13 @@ export default function EarnerPortalPage() {
                       ? "border-[#fecaca] bg-[#fef2f2] text-[#991b1b]"
                       : anonymitySet < 5
                       ? "border-[#fde68a] bg-[#fffbeb] text-[#92400e]"
-                      : "border-[#a7f3d0] bg-[#ecfdf5] text-[#065f46]"
+                      : "border-[#bfdbfe] bg-[#eff6ff] text-[#1e40af]"
                   }`}
                 >
                   <div className="flex items-center justify-between font-bold">
-                    <span>
-                      {anonymitySet <= 1 ? "⚠️ PRIVACY WARNING (ANONYMITY SET: 1)" : `ANONYMITY CROWD: ${anonymitySet} RECIPIENTS`}
+                    <span className="inline-flex items-center gap-1.5">
+                      {anonymitySet <= 1 && <WarningCircle size={14} weight="bold" />}
+                      {anonymitySet <= 1 ? "PRIVACY WARNING (ANONYMITY SET: 1)" : `ANONYMITY CROWD: ${anonymitySet} RECIPIENTS`}
                     </span>
                     <span className="font-mono text-[10px]">FR-012 Compliance</span>
                   </div>
@@ -372,7 +374,7 @@ export default function EarnerPortalPage() {
                       value={verifierName}
                       onChange={(e) => setVerifierName(e.target.value)}
                       placeholder="e.g. Meridian Properties Ltd"
-                      className="mt-2 w-full rounded-lg border border-[#e4e4e7] bg-white px-3.5 py-2.5 text-xs font-medium text-[#111827] focus:border-[#10b981] focus:outline-none"
+                      className="mt-2 w-full rounded-lg border border-[#e4e4e7] bg-white px-3.5 py-2.5 text-xs font-medium text-[#111827] focus:border-[#3b82f6] focus:outline-none"
                     />
                   </div>
 
@@ -383,7 +385,7 @@ export default function EarnerPortalPage() {
                     <select
                       value={expiryDays}
                       onChange={(e) => setExpiryDays(Number(e.target.value))}
-                      className="mt-2 w-full rounded-lg border border-[#e4e4e7] bg-white px-3.5 py-2.5 text-xs font-medium text-[#111827] focus:border-[#10b981] focus:outline-none"
+                      className="mt-2 w-full rounded-lg border border-[#e4e4e7] bg-white px-3.5 py-2.5 text-xs font-medium text-[#111827] focus:border-[#3b82f6] focus:outline-none"
                     >
                       <option value={7}>7 Days</option>
                       <option value={18}>18 Days</option>
@@ -396,7 +398,7 @@ export default function EarnerPortalPage() {
                 <button
                   type="submit"
                   disabled={isGenerating}
-                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#10b981] py-3.5 text-xs font-bold text-white transition-all hover:bg-[#059669] active:scale-[0.99] disabled:opacity-75 shadow-md shadow-[#10b981]/20"
+                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#3b82f6] py-3.5 text-xs font-bold text-white transition-all hover:bg-[#2563eb] active:scale-[0.99] disabled:opacity-75 shadow-md shadow-[#3b82f6]/20"
                 >
                   {isGenerating ? (
                     <>
@@ -418,24 +420,26 @@ export default function EarnerPortalPage() {
               {/* Refusal Alert (FR-007) */}
               {refusalError && (
                 <div className="mt-6 rounded-xl border border-[#fecaca] bg-[#fef2f2] p-4 text-xs font-mono text-[#991b1b]">
-                  <span className="font-bold block mb-1">🛑 PROOF REFUSAL (ZERO ON-CHAIN TRACE):</span>
+                  <span className="inline-flex items-center gap-1.5 font-bold mb-1">
+                    <Prohibit size={14} weight="bold" /> PROOF REFUSAL (ZERO ON-CHAIN TRACE):
+                  </span>
                   {refusalError}
                 </div>
               )}
 
               {/* Generated Claim Output Card */}
               {generatedClaim && (
-                <div className="mt-8 rounded-2xl border-2 border-[#10b981] bg-[#ecfdf5] p-6 shadow-sm">
+                <div className="mt-8 rounded-2xl border-2 border-[#3b82f6] bg-[#eff6ff] p-6 shadow-sm">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-bold text-[#065f46]">
-                      🟢 PROOF GENERATED &amp; REGISTERED ON-CHAIN
+                    <span className="inline-flex items-center gap-1.5 font-mono text-xs font-bold text-[#1e40af]">
+                      <CheckCircle size={14} weight="bold" /> PROOF GENERATED &amp; REGISTERED ON-CHAIN
                     </span>
-                    <span className="font-mono text-[10px] text-[#047857] bg-white px-2 py-0.5 rounded-full border border-[#a7f3d0]">
+                    <span className="font-mono text-[10px] text-[#1d4ed8] bg-white px-2 py-0.5 rounded-full border border-[#bfdbfe]">
                       Expires in {expiryDays} days
                     </span>
                   </div>
 
-                  <p className="mt-2 text-xs text-[#065f46] leading-relaxed">
+                  <p className="mt-2 text-xs text-[#1e40af] leading-relaxed">
                     Share this unique single-use link with <span className="font-bold">{generatedClaim.verifierName}</span>. They will see only the verified threshold statement.
                   </p>
 
@@ -444,7 +448,7 @@ export default function EarnerPortalPage() {
                       type="text"
                       readOnly
                       value={typeof window !== "undefined" ? `${window.location.origin}/v/${generatedClaim.shortId}` : `/v/${generatedClaim.shortId}`}
-                      className="w-full rounded-lg border border-[#a7f3d0] bg-white px-3.5 py-2.5 font-mono text-xs text-[#111827] focus:outline-none"
+                      className="w-full rounded-lg border border-[#bfdbfe] bg-white px-3.5 py-2.5 font-mono text-xs text-[#111827] focus:outline-none"
                     />
                     <button
                       type="button"
@@ -455,11 +459,11 @@ export default function EarnerPortalPage() {
                     </button>
                   </div>
 
-                  <div className="mt-4 flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-[#a7f3d0] font-mono text-[11px] text-[#047857]">
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-[#bfdbfe] font-mono text-[11px] text-[#1d4ed8]">
                     <span>Challenge Binding: {generatedClaim.verifierName}</span>
                     <Link
                       href={`/v/${generatedClaim.shortId}`}
-                      className="font-bold underline hover:text-[#065f46]"
+                      className="font-bold underline hover:text-[#1e40af]"
                     >
                       Open Verifier View →
                     </Link>
@@ -476,15 +480,15 @@ export default function EarnerPortalPage() {
                 </h3>
                 <ul className="mt-3 space-y-2.5 text-xs text-[#6b7280]">
                   <li className="flex items-start gap-2">
-                    <span className="text-[#059669] font-bold">✓</span>
+                    <span className="text-[#2563eb] font-bold">✓</span>
                     <span><strong>Receipt:</strong> Claim ID + Verifier Challenge Hash</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-[#059669] font-bold">✓</span>
+                    <span className="text-[#2563eb] font-bold">✓</span>
                     <span><strong>Predicate:</strong> Qualifying income floor was exceeded</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-[#059669] font-bold">✓</span>
+                    <span className="text-[#2563eb] font-bold">✓</span>
                     <span><strong>Expiry:</strong> Absolute block timestamp expiry</span>
                   </li>
                   <li className="flex items-start gap-2">
@@ -499,7 +503,7 @@ export default function EarnerPortalPage() {
                   Single-Use &amp; Replay Guard (FR-003)
                 </h3>
                 <p className="mt-2 text-xs text-[#6b7280] leading-relaxed">
-                  Once <span className="font-semibold text-[#111827]">{verifierName}</span> opens and consumes this link, the single-use challenge is marked <code className="font-mono text-[#059669]">spent</code> on-chain. Second presentations immediately fail.
+                  Once <span className="font-semibold text-[#111827]">{verifierName}</span> opens and consumes this link, the single-use challenge is marked <code className="font-mono text-[#2563eb]">spent</code> on-chain. Second presentations immediately fail.
                 </p>
               </div>
             </div>
@@ -511,7 +515,7 @@ export default function EarnerPortalPage() {
           <div className="rounded-2xl border border-[#e4e4e7] bg-white p-6 sm:p-8 shadow-sm">
             <div className="flex items-center justify-between border-b border-[#f4f4f5] pb-4 mb-6">
               <div>
-                <span className="font-mono text-xs font-semibold uppercase tracking-widest text-[#059669]">
+                <span className="font-mono text-xs font-semibold uppercase tracking-widest text-[#2563eb]">
                   [ Slice 3 · T048 / FR-010 ]
                 </span>
                 <h2 className="mt-1 font-display text-xl font-bold text-[#111827]">
@@ -522,7 +526,7 @@ export default function EarnerPortalPage() {
                 </p>
               </div>
 
-              <span className="font-mono text-xs font-bold text-[#059669]">
+              <span className="font-mono text-xs font-bold text-[#2563eb]">
                 {claimsList.length} Total Claims
               </span>
             </div>
@@ -542,7 +546,7 @@ export default function EarnerPortalPage() {
                         <span
                           className={`rounded-full px-2.5 py-0.5 font-mono text-[10px] font-bold ${
                             claim.status === "ACTIVE"
-                              ? "bg-[#ecfdf5] text-[#047857] border border-[#a7f3d0]"
+                              ? "bg-[#eff6ff] text-[#1d4ed8] border border-[#bfdbfe]"
                               : claim.status === "REDEEMED"
                               ? "bg-[#eff6ff] text-[#1d4ed8] border border-[#bfdbfe]"
                               : claim.status === "REVOKED"

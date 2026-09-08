@@ -1,12 +1,13 @@
+import Image from "next/image";
+
 export function TrustBar() {
   const partners = [
-    { name: "STRK20 Pool", icon: "⬡" },
-    { name: "Cairo 2.0", icon: "⚡" },
-    { name: "Pathfinder", icon: "◈" },
-    { name: "Starknet", icon: "✳" },
-    { name: "Argent", icon: "▲" },
-    { name: "Braavos", icon: "🛡️" },
-    { name: "Cartridge", icon: "🎮" },
+    { name: "STRK20 Pool", logo: "/logos/strk20.png" },
+    { name: "Cairo 2.0", logo: "/logos/cairo.png" },
+    { name: "Starknet", logo: "/logos/starknet.png" },
+    { name: "Argent", logo: "/logos/argent.svg" },
+    { name: "Braavos", logo: "/logos/braavos.svg" },
+    { name: "Cartridge", logo: "/logos/cartridge.svg" },
   ];
 
   return (
@@ -19,7 +20,13 @@ export function TrustBar() {
         <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-14 opacity-70">
           {partners.map((p, idx) => (
             <div key={idx} className="flex items-center gap-2 text-xs font-semibold text-[#181818]">
-              <span className="text-sm">{p.icon}</span>
+              <Image
+                src={p.logo}
+                alt={`${p.name} logo`}
+                width={16}
+                height={16}
+                className="h-4 w-4 object-contain"
+              />
               <span>{p.name}</span>
             </div>
           ))}

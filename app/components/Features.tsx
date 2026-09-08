@@ -1,3 +1,7 @@
+"use client";
+
+import { ShieldCheck, Lightning, Scroll, ClipboardText } from "@phosphor-icons/react";
+
 export function Features() {
   const cards = [
     {
@@ -7,16 +11,16 @@ export function Features() {
       badge: "h(tag, user, vk)",
       badgeColor: "text-[#181818] bg-[#f4f4f5]",
       iconBg: "bg-[#181818] text-white",
-      icon: "🛡️",
+      icon: ShieldCheck,
     },
     {
       title: "Virtual Block Compute",
       desc: "Evaluate payments and threshold predicates inside a proven client virtual block without leaking calldata on chain.",
       note: "Zero calldata leaked on chain.",
       badge: "Cairo 2.0 VM",
-      badgeColor: "text-[#059669] bg-[#ecfdf5]",
-      iconBg: "bg-[#10b981] text-white",
-      icon: "⚡",
+      badgeColor: "text-[#2563eb] bg-[#eff6ff]",
+      iconBg: "bg-[#3b82f6] text-white",
+      icon: Lightning,
     },
     {
       title: "Payer Commitments",
@@ -25,7 +29,7 @@ export function Features() {
       badge: "STRK20 Attestation",
       badgeColor: "text-[#d97706] bg-[#fffbeb]",
       iconBg: "bg-[#f59e0b] text-white",
-      icon: "📜",
+      icon: Scroll,
     },
     {
       title: "Ready Templates",
@@ -34,7 +38,7 @@ export function Features() {
       badge: "1-Click Schemas",
       badgeColor: "text-[#7c3aed] bg-[#f5f3ff]",
       iconBg: "bg-[#8b5cf6] text-white",
-      icon: "📋",
+      icon: ClipboardText,
     },
   ];
 
@@ -49,7 +53,7 @@ export function Features() {
 
           <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#181818] leading-[1.15]">
             Everything you need <br />
-            <span className="text-[#059669]">to prove private income</span>
+            <span className="text-[#2563eb]">to prove private income</span>
           </h2>
 
           <p className="mt-4 text-sm sm:text-base text-[#686868] max-w-xl mx-auto">
@@ -62,12 +66,12 @@ export function Features() {
           {cards.map((c, i) => (
             <div
               key={i}
-              className="flex flex-col justify-between rounded-2xl border border-[#ededed] bg-white p-7 sm:p-8 shadow-xs hover:border-[#10b981]/50 hover:shadow-md transition-all group"
+              className="flex flex-col justify-between rounded-2xl border border-[#ededed] bg-white p-7 sm:p-8 shadow-xs hover:border-[#3b82f6]/50 hover:shadow-md transition-all group"
             >
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-lg ${c.iconBg} shadow-xs group-hover:scale-105 transition-transform`}>
-                    {c.icon}
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${c.iconBg} shadow-xs group-hover:scale-105 transition-transform`}>
+                    <c.icon size={20} weight="fill" />
                   </div>
                   <span className={`font-mono text-[10px] font-semibold px-2 py-0.5 rounded-full ${c.badgeColor}`}>
                     {c.badge}

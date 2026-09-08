@@ -11,7 +11,7 @@ import { Footer } from "./components/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white text-[#181818] flex flex-col justify-between selection:bg-[#10b981]/20 selection:text-[#065f46]">
+    <div className="min-h-screen bg-white text-[#181818] flex flex-col justify-between selection:bg-[#3b82f6]/20 selection:text-[#1e40af]">
       <Navbar />
       <main className="w-full">
         <Hero />
