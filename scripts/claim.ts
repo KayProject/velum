@@ -138,7 +138,7 @@ async function main() {
     await new Promise((resolve) => setTimeout(resolve, 5000));
     currentBlock = await provider.getBlockLatestAccepted();
   }
-  const provingBlock = { block_number: currentBlock.block_number - PROVING_MARGIN };
+  const provingBlock = currentBlock.block_number - PROVING_MARGIN;
 
   const provingProvider = new ProvingServiceProofProvider(config.provingServiceUrl, constants.StarknetChainId.SN_MAIN, {
     nodeUrl: config.nodeUrl,
