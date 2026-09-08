@@ -6,7 +6,7 @@ import { SkyBackdrop } from "./SkyBackdrop";
 import { CheckCircle, Lightning, LockKey, Check, Copy, Sparkle } from "@phosphor-icons/react";
 
 export function Hero() {
-  const [prompt, setPrompt] = useState("Prove qualifying income >= ₦4,200,000 in 2026-Q1 from Acme DAO");
+  const [prompt, setPrompt] = useState("Prove qualifying income >= $4,200,000 in 2026-Q1 from Acme DAO");
   const [activeChip, setActiveChip] = useState("Earner Proof");
   const [proving, setProving] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -14,30 +14,30 @@ export function Hero() {
   const chips = [
     {
       label: "Earner Proof",
-      text: "Prove qualifying income >= ₦4,200,000 in 2026-Q1 from Acme DAO",
+      text: "Prove qualifying income >= $4,200,000 in 2026-Q1 from Acme DAO",
       payer: "Acme DAO (0x04f7...91a2)",
       period: "2026-Q1 (Jan–Mar)",
-      threshold: "₦4,200,000",
+      threshold: "$4,200,000",
       attestations: "3/3 Signed",
       statusIcon: CheckCircle,
-      status: "Threshold Met (₦4,200,000)",
+      status: "Threshold Met ($4,200,000)",
     },
     {
       label: "Payer Tag",
       text: "Emit signed payment attestation for March 2026 payroll",
       payer: "Meridian Labs (0x071b...882c)",
       period: "March 2026",
-      threshold: "₦1,400,000",
+      threshold: "$1,400,000",
       attestations: "1/1 Emitted",
       statusIcon: CheckCircle,
       status: "Attestation Signed On-Chain",
     },
     {
       label: "Virtual Block",
-      text: "Evaluate sum(attestations) >= ₦4,200,000 threshold client-side",
+      text: "Evaluate sum(attestations) >= $4,200,000 threshold client-side",
       payer: "Client Circuit (Cairo 2.0)",
       period: "0ms Gas / Client Virtual Block",
-      threshold: "₦4,200,000",
+      threshold: "$4,200,000",
       attestations: "3 Attestations Aggregated",
       statusIcon: Lightning,
       status: "Zero Calldata Leaked",
@@ -88,10 +88,10 @@ export function Hero() {
           </p>
 
           {/* 2 Buttons */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
+          <div className="btn-flip-row mt-8 flex flex-wrap items-center justify-center gap-3.5">
             <Link
               href="/app"
-              className="inline-flex items-center justify-center rounded-xl bg-[#181818] px-6 py-3.5 text-xs sm:text-sm font-medium text-white transition-all hover:bg-[#2b2b2b] shadow-md active:scale-95 gap-2"
+              className="btn-flip inline-flex items-center justify-center rounded-xl bg-[#181818] px-6 py-3.5 text-xs sm:text-sm font-medium text-white shadow-md active:scale-95 gap-2"
             >
               <span>Launch Earner Portal</span>
               <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,7 +100,7 @@ export function Hero() {
             </Link>
             <Link
               href="/payer"
-              className="inline-flex items-center justify-center rounded-xl border border-[#ededed] bg-white/95 px-6 py-3.5 text-xs sm:text-sm font-medium text-[#181818] transition-all hover:bg-[#f6f6f6] shadow-xs backdrop-blur-xs active:scale-95"
+              className="btn-flip inline-flex items-center justify-center rounded-xl border border-[#ededed] bg-white/95 px-6 py-3.5 text-xs sm:text-sm font-medium text-[#181818] shadow-xs backdrop-blur-xs active:scale-95"
             >
               Payer Attestations
             </Link>

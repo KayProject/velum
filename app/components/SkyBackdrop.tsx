@@ -5,80 +5,47 @@ import { useEffect, useRef } from "react";
 /**
  * The sky behind the hero and the closing CTA.
  *
- * Combines high-resolution atmospheric cloud blending with multi-tiered SVG cumulus
- * depth layers that continuously drift and respond to scroll parallax physics.
+ * A real cloud photograph, held slightly zoomed in. Scrolling past the section
+ * both deepens the zoom and pans the focal point, so the photo reads as a
+ * slow, continuous push through the clouds rather than a static image.
  */
 
 type Variant = "hero" | "cta";
 
-/** One soft cumulus, built from overlapping ellipses and blurred into a single mass. */
-function Cloud({
-  id,
-  className,
-  opacity = 1,
-  tint = "#c8dff5",
-}: {
-  id: string;
-  className?: string;
-  opacity?: number;
-  tint?: string;
-}) {
-  return (
-    <svg
-      viewBox="0 0 640 220"
-      className={className}
-      style={{ opacity }}
-      aria-hidden="true"
-      focusable="false"
-    >
-      <defs>
-        <filter id={`${id}-soften`} x="-20%" y="-40%" width="140%" height="200%">
-          <feGaussianBlur stdDeviation="14" />
-        </filter>
-        <linearGradient id={`${id}-body`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ffffff" />
-          <stop offset="55%" stopColor="#ffffff" />
-          <stop offset="100%" stopColor={tint} />
-        </linearGradient>
-      </defs>
-      <g filter={`url(#${id}-soften)`} fill={`url(#${id}-body)`}>
-        <ellipse cx="180" cy="150" rx="150" ry="58" />
-        <ellipse cx="300" cy="120" rx="118" ry="74" />
-        <ellipse cx="415" cy="140" rx="132" ry="62" />
-        <ellipse cx="248" cy="112" rx="86" ry="60" />
-        <ellipse cx="360" cy="156" rx="160" ry="52" />
-        <ellipse cx="500" cy="162" rx="104" ry="44" />
-      </g>
-    </svg>
-  );
-}
-
 export function SkyBackdrop({ variant = "hero" }: { variant?: Variant }) {
-  const far = useRef<HTMLDivElement>(null);
-  const mid = useRef<HTMLDivElement>(null);
-  const near = useRef<HTMLDivElement>(null);
+  const photo = useRef<HTMLDivElement>(null);
   const grid = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const layers = [far.current, mid.current, near.current, grid.current];
+    const layers = [photo.current, grid.current];
     if (layers.some((layer) => !layer)) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reduced.matches) return;
 
-    // Depth rates: far clouds move slowly, near ones move faster, grid moves subtly
-    const rates = [0.08, 0.18, 0.32, -0.06];
     let frame = 0;
 
     const apply = () => {
       frame = 0;
-      const host = far.current?.parentElement;
+      const host = photo.current?.parentElement;
       if (!host) return;
-      const offset = -host.getBoundingClientRect().top;
 
-      layers.forEach((layer, index) => {
-        if (layer) layer.style.transform = `translate3d(0, ${offset * rates[index]}px, 0)`;
-      });
+      const rect = host.getBoundingClientRect();
+      // Progress through the section: 0 when it enters the viewport, 1 once
+      // it has fully scrolled past — clamped so the effect never overshoots.
+      const total = rect.height + window.innerHeight;
+      const progress = Math.min(1, Math.max(0, (window.innerHeight - rect.top) / total));
+
+      const scale = 1.12 + progress * 0.22;
+      const panY = progress * 6; // percent — shifts the focal point downward
+      const panX = (progress - 0.5) * 4; // percent — slight lateral drift
+
+      if (photo.current) {
+        photo.current.style.transform = `scale(${scale}) translate(${panX}%, ${panY}%)`;
+      }
+      if (grid.current) {
+        grid.current.style.transform = `translate3d(0, ${rect.top * 0.06}px, 0)`;
+      }
     };
 
     const onScroll = () => {
@@ -99,35 +66,30 @@ export function SkyBackdrop({ variant = "hero" }: { variant?: Variant }) {
 
   return (
     <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none" aria-hidden="true">
-      {/* Daylight Atmospheric Sky Gradient */}
+      {/* Cloud photograph — zoomed in, shifts focus on scroll */}
+      <div
+        ref={photo}
+        className="absolute inset-0 will-change-transform"
+        style={{
+          backgroundImage: "url(/cloud-backdrop.jpeg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          transform: "scale(1.12)",
+          transformOrigin: "center",
+        }}
+      />
+
+      {/* Atmospheric tint so foreground text stays legible over the photo */}
       <div
         className={
           isHero
-            ? "absolute inset-0 bg-[linear-gradient(180deg,#3b82f6_0%,#60a5fa_18%,#93c5fd_38%,#dbeafe_62%,#ffffff_100%)] opacity-95"
-            : "absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,#dbeafe_35%,#93c5fd_75%,#3b82f6_100%)] opacity-95"
+            ? "absolute inset-0 bg-[linear-gradient(180deg,rgba(59,130,246,0.35)_0%,rgba(147,197,253,0.15)_35%,rgba(255,255,255,0.55)_75%,#ffffff_100%)]"
+            : "absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,rgba(219,234,254,0.55)_30%,rgba(147,197,253,0.3)_70%,rgba(59,130,246,0.4)_100%)]"
         }
       />
 
       {/* Warm Sunlight Glow from Top-Left */}
-      <div className="absolute -left-1/4 -top-1/3 h-[150%] w-[100%] rotate-12 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.95),transparent_65%)]" />
-
-      {/* Far Cloud Layer */}
-      <div ref={far} className="absolute inset-x-0 top-[25%] will-change-transform animate-cloud-slow">
-        <Cloud id="sky-far-a" className="absolute -left-[10%] w-[80%]" opacity={0.65} tint="#bfdbfe" />
-        <Cloud id="sky-far-b" className="absolute -right-[12%] top-6 w-[72%]" opacity={0.6} tint="#bfdbfe" />
-      </div>
-
-      {/* Mid Cloud Layer */}
-      <div ref={mid} className="absolute inset-x-0 bottom-[10%] will-change-transform animate-cloud-fast">
-        <Cloud id="sky-mid-a" className="absolute -left-[14%] w-[70%]" opacity={0.88} tint="#dbeafe" />
-        <Cloud id="sky-mid-b" className="absolute -right-[16%] bottom-4 w-[74%]" opacity={0.82} tint="#dbeafe" />
-      </div>
-
-      {/* Near Cloud Layer */}
-      <div ref={near} className="absolute inset-x-0 -bottom-[2%] will-change-transform">
-        <Cloud id="sky-near-a" className="absolute -left-[4%] w-[52%]" opacity={0.98} tint="#eff6ff" />
-        <Cloud id="sky-near-b" className="absolute -right-[6%] bottom-1 w-[46%]" opacity={0.95} tint="#eff6ff" />
-      </div>
+      <div className="absolute -left-1/4 -top-1/3 h-[150%] w-[100%] rotate-12 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.85),transparent_65%)]" />
 
       {/* Precision High-Contrast Technical Grid (Crisp 1px Visible Lines) */}
       <div
@@ -164,4 +126,3 @@ export function SkyBackdrop({ variant = "hero" }: { variant?: Variant }) {
     </div>
   );
 }
-

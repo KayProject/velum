@@ -44,6 +44,14 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-16 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[#ededed]/60 pt-8 font-mono text-[11px] text-[#858585]">
           <div>© 2026 Velum | All Rights Reserved</div>
+          <div className="flex items-center gap-5">
+            <Link href="/terms" className="hover:text-[#181818] transition-colors">
+              Terms &amp; Conditions
+            </Link>
+            <Link href="/privacy" className="hover:text-[#181818] transition-colors">
+              Privacy Policy
+            </Link>
+          </div>
           <div>Built on Starknet STRK20 Privacy Pool</div>
         </div>
       </div>

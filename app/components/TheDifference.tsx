@@ -50,7 +50,7 @@ export function TheDifference() {
                 <div className="space-y-1.5 pt-1 text-[#71717a]">
                   <div className="flex justify-between text-[10px]">
                     <span>Total Balances Exposed</span>
-                    <span className="text-[#ef4444] font-bold">₦14,850,200</span>
+                    <span className="text-[#ef4444] font-bold">$14,850,200</span>
                   </div>
                   <div className="flex justify-between text-[10px]">
                     <span>Medical & Personal</span>

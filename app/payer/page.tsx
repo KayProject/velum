@@ -20,7 +20,7 @@ export default function PayerConsolePage() {
   // Single Attestation state
   const [recipientTag, setRecipientTag] = useState("");
   const [amount, setAmount] = useState("1500000");
-  const [token, setToken] = useState("NGN");
+  const [token, setToken] = useState("USD");
   const [windowPeriod, setWindowPeriod] = useState("2026-Q1");
   const [selectedPayerAddress, setSelectedPayerAddress] = useState("0x0403bc891a271df912a7812a39281a8b9281a");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,7 +35,7 @@ export default function PayerConsolePage() {
 
   // Batch Attestation state
   const [csvContent, setCsvContent] = useState(
-    `# recipient_tag, amount, token, window\n0x05b291a2810f99a8127390182739182739182739182739182739182739182739, 1500000, NGN, 2026-Q1\n0x07a112233445566778899aabbccddeeff00112233445566778899aabbccddeeff, 2200000, NGN, 2026-Q1\n0x08b2233445566778899aabbccddeeff00112233445566778899aabbccddeeff, 1800000, NGN, 2026-Q1`
+    `# recipient_tag, amount, token, window\n0x05b291a2810f99a8127390182739182739182739182739182739182739182739, 1500000, USD, 2026-Q1\n0x07a112233445566778899aabbccddeeff00112233445566778899aabbccddeeff, 2200000, USD, 2026-Q1\n0x08b2233445566778899aabbccddeeff00112233445566778899aabbccddeeff, 1800000, USD, 2026-Q1`
   );
   const [parsedBatch, setParsedBatch] = useState<Array<{ recipientTag: string; amount: bigint; token: string; windowPeriod: string }>>([]);
   const [batchError, setBatchError] = useState<string | null>(null);
@@ -391,9 +391,8 @@ export default function PayerConsolePage() {
                       onChange={(e) => setToken(e.target.value)}
                       className="mt-1.5 w-full rounded-lg border border-[#e4e4e7] bg-white px-3 py-2 text-xs font-medium text-[#111827] focus:outline-none"
                     >
-                      <option value="NGN">₦ NGN</option>
-                      <option value="STRK">STRK</option>
                       <option value="USD">$ USD</option>
+                      <option value="STRK">STRK</option>
                     </select>
                   </div>
                 </div>
@@ -502,7 +501,7 @@ export default function PayerConsolePage() {
             <div className="mt-6 border border-[#e4e4e7] rounded-xl overflow-hidden">
               <div className="bg-[#fafafa] px-4 py-2.5 border-b border-[#e4e4e7] flex items-center justify-between font-mono text-xs font-bold text-[#71717a]">
                 <span>PARSED ENTRIES ({parsedBatch.length})</span>
-                <span>TOTAL PAYOUT: ₦{parsedBatch.reduce((sum, i) => sum + Number(i.amount), 0).toLocaleString()}</span>
+                <span>TOTAL PAYOUT: ${parsedBatch.reduce((sum, i) => sum + Number(i.amount), 0).toLocaleString()}</span>
               </div>
 
               <div className="divide-y divide-[#f4f4f5] max-h-56 overflow-y-auto">
@@ -510,7 +509,7 @@ export default function PayerConsolePage() {
                   <div key={idx} className="px-4 py-3 flex items-center justify-between text-xs font-mono">
                     <span className="text-[#111827] truncate max-w-xs">{entry.recipientTag}</span>
                     <span className="font-bold text-[#2563eb]">
-                      ₦{Number(entry.amount).toLocaleString()} ({entry.token})
+                      ${Number(entry.amount).toLocaleString()} ({entry.token})
                     </span>
                     <span className="text-[#71717a]">{entry.windowPeriod}</span>
                   </div>

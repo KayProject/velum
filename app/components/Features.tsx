@@ -9,8 +9,11 @@ export function Features() {
       desc: "Unforgeable identity derivation from your viewing key. Proving income to Landlord A cannot be correlated with Lender B.",
       note: "Unlinkable proofs across applications.",
       badge: "h(tag, user, vk)",
-      badgeColor: "text-[#181818] bg-[#f4f4f5]",
+      badgeColor: "text-[#181818] bg-white",
       iconBg: "bg-[#181818] text-white",
+      cardBg: "bg-[#f4f4f5]",
+      cardBorder: "border-[#e4e4e7]",
+      hoverBorder: "hover:border-[#181818]/40",
       icon: ShieldCheck,
     },
     {
@@ -18,8 +21,11 @@ export function Features() {
       desc: "Evaluate payments and threshold predicates inside a proven client virtual block without leaking calldata on chain.",
       note: "Zero calldata leaked on chain.",
       badge: "Cairo 2.0 VM",
-      badgeColor: "text-[#2563eb] bg-[#eff6ff]",
+      badgeColor: "text-[#2563eb] bg-white",
       iconBg: "bg-[#3b82f6] text-white",
+      cardBg: "bg-[#eff6ff]",
+      cardBorder: "border-[#bfdbfe]",
+      hoverBorder: "hover:border-[#3b82f6]/60",
       icon: Lightning,
     },
     {
@@ -27,8 +33,11 @@ export function Features() {
       desc: "Employers and DAOs emit cryptographic attestations alongside payroll so records cannot be forged.",
       note: "Cryptographic payer authenticity.",
       badge: "STRK20 Attestation",
-      badgeColor: "text-[#d97706] bg-[#fffbeb]",
+      badgeColor: "text-[#d97706] bg-white",
       iconBg: "bg-[#f59e0b] text-white",
+      cardBg: "bg-[#fffbeb]",
+      cardBorder: "border-[#fde68a]",
+      hoverBorder: "hover:border-[#f59e0b]/60",
       icon: Scroll,
     },
     {
@@ -36,8 +45,11 @@ export function Features() {
       desc: "Pre-built proof formats for housing leases, mortgages, and visa applications with instant validation.",
       note: "Start faster with the right structure.",
       badge: "1-Click Schemas",
-      badgeColor: "text-[#7c3aed] bg-[#f5f3ff]",
+      badgeColor: "text-[#7c3aed] bg-white",
       iconBg: "bg-[#8b5cf6] text-white",
+      cardBg: "bg-[#f5f3ff]",
+      cardBorder: "border-[#ddd6fe]",
+      hoverBorder: "hover:border-[#8b5cf6]/60",
       icon: ClipboardText,
     },
   ];
@@ -66,7 +78,7 @@ export function Features() {
           {cards.map((c, i) => (
             <div
               key={i}
-              className="flex flex-col justify-between rounded-2xl border border-[#ededed] bg-white p-7 sm:p-8 shadow-xs hover:border-[#3b82f6]/50 hover:shadow-md transition-all group"
+              className={`flex flex-col justify-between rounded-2xl border ${c.cardBorder} ${c.cardBg} p-7 sm:p-8 shadow-xs ${c.hoverBorder} hover:shadow-md transition-all group`}
             >
               <div>
                 <div className="flex items-center justify-between mb-6">
@@ -82,13 +94,13 @@ export function Features() {
                   {c.title}
                 </h3>
 
-                <p className="mt-3 text-xs sm:text-sm leading-relaxed text-[#686868]">
+                <p className="mt-3 text-xs sm:text-sm leading-relaxed text-[#3f3f46]">
                   {c.desc}
                 </p>
               </div>
 
-              <div className="mt-8 pt-4 border-t border-[#ededed]/60">
-                <p className="font-sans text-xs font-medium text-[#858585]">
+              <div className="mt-8 pt-4 border-t border-black/10">
+                <p className="font-sans text-xs font-medium text-[#71717a]">
                   ✦ {c.note}
                 </p>
               </div>

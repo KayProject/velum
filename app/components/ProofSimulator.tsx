@@ -4,7 +4,7 @@ import { useState } from "react";
 import { CheckCircle } from "@phosphor-icons/react";
 
 export function ProofSimulator() {
-  const [query, setQuery] = useState("Qualifying income exceeded ₦4,200,000 in 2026-Q1");
+  const [query, setQuery] = useState("Qualifying income exceeded $4,200,000 in 2026-Q1");
   const [activeChip, setActiveChip] = useState("Tenancy Lease");
   const [payer, setPayer] = useState("Acme DAO");
   const [period, setPeriod] = useState("2026-Q1");
@@ -14,7 +14,7 @@ export function ProofSimulator() {
   const [hasGenerated, setHasGenerated] = useState(true);
 
   const chips = [
-    { name: "Tenancy Lease", prompt: "Qualifying income exceeded ₦4,200,000 in 2026-Q1", payer: "Acme DAO", threshold: "4,200,000", verifier: "Meridian Properties Ltd" },
+    { name: "Tenancy Lease", prompt: "Qualifying income exceeded $4,200,000 in 2026-Q1", payer: "Acme DAO", threshold: "4,200,000", verifier: "Meridian Properties Ltd" },
     { name: "Mortgage Proof", prompt: "Monthly salary exceeded $6,500 over 6 months", payer: "StarkWare Fdn", threshold: "39,000", verifier: "Apex Credit Union" },
     { name: "Visa Threshold", prompt: "Remote annual income exceeded €32,000 for 2025", payer: "Autonomous Labs", threshold: "32,000", verifier: "Consulate Visa Office" },
     { name: "Payer Attestation", prompt: "Commitment emission for March 2026 payroll", payer: "Global Payroll DAO", threshold: "5,000", verifier: "Underwriting Relayer" },
@@ -194,7 +194,7 @@ export function ProofSimulator() {
                 Qualifying income from{" "}
                 <span className="text-[#2563eb] font-bold">{payer}</span> exceeded{" "}
                 <span className="text-[#2563eb] font-bold">
-                  {threshold.includes("$") || threshold.includes("€") ? threshold : `₦${threshold}`}
+                  {threshold.includes("$") || threshold.includes("€") ? threshold : `$${threshold}`}
                 </span>{" "}
                 between{" "}
                 <span className="underline decoration-[#3b82f6]/50 underline-offset-2">

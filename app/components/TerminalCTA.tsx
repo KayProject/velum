@@ -27,10 +27,10 @@ export function TerminalCTA() {
           </p>
 
           {/* 2 Buttons */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
+          <div className="btn-flip-row mt-8 flex flex-wrap items-center justify-center gap-3.5">
             <Link
               href="/app"
-              className="inline-flex items-center justify-center rounded-xl bg-[#181818] px-6 py-3.5 text-xs sm:text-sm font-medium text-white transition-all hover:bg-[#2b2b2b] shadow-md active:scale-95 gap-2"
+              className="btn-flip inline-flex items-center justify-center rounded-xl bg-[#181818] px-6 py-3.5 text-xs sm:text-sm font-medium text-white shadow-md active:scale-95 gap-2"
             >
               <span>Launch Earner Portal</span>
               <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -39,7 +39,7 @@ export function TerminalCTA() {
             </Link>
             <Link
               href="/payer"
-              className="inline-flex items-center justify-center rounded-xl border border-[#ededed] bg-white/95 px-6 py-3.5 text-xs sm:text-sm font-medium text-[#181818] transition-all hover:bg-[#f6f6f6] shadow-xs active:scale-95"
+              className="btn-flip inline-flex items-center justify-center rounded-xl border border-[#ededed] bg-white/95 px-6 py-3.5 text-xs sm:text-sm font-medium text-[#181818] shadow-xs active:scale-95"
             >
               Try Demo
             </Link>

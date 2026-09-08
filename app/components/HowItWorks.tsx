@@ -11,7 +11,7 @@ export function HowItWorks() {
       badge: "STEP 1",
       title: "Enter your parameters",
       desc: "Choose the payer, time window, and threshold amount in a simple prompt — or use standard housing & visa presets.",
-      bubble: "Prove qualifying income >= ₦4,200,000 in 2026-Q1 from Acme DAO",
+      bubble: "Prove qualifying income >= $4,200,000 in 2026-Q1 from Acme DAO",
       status: "Configuring parameters...",
       renderVisual: () => (
         <div className="rounded-2xl border border-[#ededed] bg-white p-4 space-y-3 font-mono text-xs shadow-xs">
@@ -31,7 +31,7 @@ export function HowItWorks() {
           </div>
           <div className="p-2.5 rounded-lg bg-[#eff6ff] border border-[#bfdbfe] flex justify-between items-center text-[11px]">
             <span className="text-[#1d4ed8]">Floor Threshold:</span>
-            <span className="font-bold text-[#1e40af]">₦4,200,000 NGN</span>
+            <span className="font-bold text-[#1e40af]">$4,200,000 USD</span>
           </div>
         </div>
       ),
@@ -66,7 +66,7 @@ export function HowItWorks() {
           </div>
           <div className="pt-1.5 border-t border-[#bfdbfe] flex justify-between items-center text-[11px] font-bold text-[#2563eb]">
             <span>Aggregate Sum:</span>
-            <span>₦4,200,000 &gt;= ₦4,200,000 (Pass)</span>
+            <span>$4,200,000 &gt;= $4,200,000 (Pass)</span>
           </div>
         </div>
       ),
@@ -75,7 +75,7 @@ export function HowItWorks() {
       badge: "STEP 3",
       title: "Verifier checks link",
       desc: "The verifier opens the single-use URL on any phone or browser. One verified line confirms the claim; the link cannot be replayed.",
-      bubble: "Verified: Qualifying income exceeded ₦4,200,000 for 2026-Q1. No records leaked.",
+      bubble: "Verified: Qualifying income exceeded $4,200,000 for 2026-Q1. No records leaked.",
       status: "Verified & Locked against replay ✓",
       renderVisual: () => (
         <div className="rounded-2xl border border-[#ededed] bg-white p-5 space-y-3.5 shadow-sm text-center">
@@ -87,7 +87,7 @@ export function HowItWorks() {
               Income Requirement Satisfied
             </h4>
             <p className="font-mono text-[11px] text-[#2563eb] mt-0.5">
-              Acme DAO · 2026-Q1 &gt;= ₦4,200,000
+              Acme DAO · 2026-Q1 &gt;= $4,200,000
             </p>
           </div>
           <div className="rounded-lg bg-[#fafafa] border border-[#f0f0f0] p-2 font-mono text-[10px] text-[#858585] flex justify-between">

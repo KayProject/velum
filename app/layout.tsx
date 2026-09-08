@@ -18,9 +18,6 @@ export const metadata: Metadata = {
   title: "Velum — Prove what matters. Reveal nothing else.",
   description:
     "The zero-knowledge proof layer for private income on Starknet STRK20. Prove income thresholds to landlords, lenders, and insurers without disclosing balances or transaction history.",
-  icons: {
-    icon: "/favicon.ico",
-  },
 };
 
 export default function RootLayout({

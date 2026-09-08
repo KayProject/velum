@@ -90,8 +90,8 @@ const INITIAL_ATTESTATIONS: PaymentAttestation[] = [
     payerName: "Acme DAO",
     recipientTag: "0x05b291a2810f99a8127390182739182739182739182739182739182739182739",
     amount: BigInt(1500000),
-    amountFormatted: "₦1,500,000",
-    token: "NGN",
+    amountFormatted: "$1,500,000",
+    token: "USD",
     windowPeriod: "2026-Q1",
     fromTimestamp: 1767225600, // Jan 1 2026
     toTimestamp: 1774915200,   // Mar 31 2026
@@ -104,8 +104,8 @@ const INITIAL_ATTESTATIONS: PaymentAttestation[] = [
     payerName: "Acme DAO",
     recipientTag: "0x05b291a2810f99a8127390182739182739182739182739182739182739182739",
     amount: BigInt(1500000),
-    amountFormatted: "₦1,500,000",
-    token: "NGN",
+    amountFormatted: "$1,500,000",
+    token: "USD",
     windowPeriod: "2026-Q1",
     fromTimestamp: 1767225600,
     toTimestamp: 1774915200,
@@ -118,8 +118,8 @@ const INITIAL_ATTESTATIONS: PaymentAttestation[] = [
     payerName: "Acme DAO",
     recipientTag: "0x05b291a2810f99a8127390182739182739182739182739182739182739182739",
     amount: BigInt(1500000),
-    amountFormatted: "₦1,500,000",
-    token: "NGN",
+    amountFormatted: "$1,500,000",
+    token: "USD",
     windowPeriod: "2026-Q1",
     fromTimestamp: 1767225600,
     toTimestamp: 1774915200,
@@ -133,8 +133,8 @@ const INITIAL_ATTESTATIONS: PaymentAttestation[] = [
     payerName: "Acme DAO",
     recipientTag: "0x07a112233445566778899aabbccddeeff00112233445566778899aabbccddeeff",
     amount: BigInt(2200000),
-    amountFormatted: "₦2,200,000",
-    token: "NGN",
+    amountFormatted: "$2,200,000",
+    token: "USD",
     windowPeriod: "2026-Q1",
     fromTimestamp: 1767225600,
     toTimestamp: 1774915200,
@@ -147,8 +147,8 @@ const INITIAL_ATTESTATIONS: PaymentAttestation[] = [
     payerName: "Acme DAO",
     recipientTag: "0x08b2233445566778899aabbccddeeff00112233445566778899aabbccddeeff",
     amount: BigInt(1800000),
-    amountFormatted: "₦1,800,000",
-    token: "NGN",
+    amountFormatted: "$1,800,000",
+    token: "USD",
     windowPeriod: "2026-Q1",
     fromTimestamp: 1767225600,
     toTimestamp: 1774915200,
@@ -165,9 +165,9 @@ const INITIAL_CLAIMS: IssuedClaim[] = [
     payerAddress: "0x0403bc891a271df912a7812a39281a8b9281a",
     payerName: "Acme DAO",
     isPayerEnrolled: true,
-    token: "NGN",
+    token: "USD",
     thresholdAmount: BigInt(4200000),
-    thresholdFormatted: "₦4,200,000",
+    thresholdFormatted: "$4,200,000",
     fromPeriod: "1 Jan 2026",
     toPeriod: "31 Mar 2026",
     fromTimestamp: 1767225600,
@@ -279,8 +279,8 @@ export function recordAttestation(params: {
   const enrolment = getPayerEnrolment(params.payerAddress);
 
   const formattedAmount =
-    params.token === "NGN"
-      ? `₦${Number(params.amount).toLocaleString()}`
+    params.token === "USD"
+      ? `$${Number(params.amount).toLocaleString()}`
       : `${params.amount.toString()} ${params.token}`;
 
   const txHash = "0x" + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join("");
@@ -318,8 +318,8 @@ export function recordBatchAttestations(
 
   const newItems: PaymentAttestation[] = entries.map((e, idx) => {
     const formattedAmount =
-      e.token === "NGN"
-        ? `₦${Number(e.amount).toLocaleString()}`
+      e.token === "USD"
+        ? `$${Number(e.amount).toLocaleString()}`
         : `${e.amount.toString()} ${e.token}`;
 
     return {
@@ -407,7 +407,7 @@ export function createIssuedClaim(params: {
 
   const paramsHashFelt = computeParamsHash({
     payer: params.payerAddress,
-    token: params.token === "NGN" ? BigInt(1) : BigInt(2),
+    token: params.token === "USD" ? BigInt(1) : BigInt(2),
     fromTs: BigInt(params.fromTimestamp),
     toTs: BigInt(params.toTimestamp),
     threshold: params.thresholdAmount,
@@ -416,8 +416,8 @@ export function createIssuedClaim(params: {
   });
 
   const formattedThreshold =
-    params.token === "NGN"
-      ? `₦${Number(params.thresholdAmount).toLocaleString()}`
+    params.token === "USD"
+      ? `$${Number(params.thresholdAmount).toLocaleString()}`
       : `${params.thresholdAmount.toString()} ${params.token}`;
 
   const shortId = `vlm_0x${claimIdStr.slice(2, 10)}`;

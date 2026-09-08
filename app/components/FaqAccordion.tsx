@@ -18,7 +18,7 @@ export function FaqAccordion() {
     },
     {
       q: "Can I customize the generated claim?",
-      a: "Yes. You can specify the exact minimum threshold (in NGN, STRK, USD, or EUR), the date window, and bind the claim solely to a specific verifier code so it cannot be forwarded or traded.",
+      a: "Yes. You can specify the exact minimum threshold (in USD, STRK, USD, or EUR), the date window, and bind the claim solely to a specific verifier code so it cannot be forwarded or traded.",
     },
     {
       q: "What types of proof claims can I create?",

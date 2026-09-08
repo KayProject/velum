@@ -39,16 +39,13 @@ export function Navbar() {
           <a href="#faq" className="transition-colors hover:text-[#686868]">
             FAQ
           </a>
-          <a href="#contact" className="transition-colors hover:text-[#686868]">
-            Contact Us
-          </a>
         </nav>
 
         {/* Top Right Black Button */}
-        <div className="flex items-center gap-3">
+        <div className="btn-flip-row flex items-center gap-3">
           <Link
             href="/app"
-            className="inline-flex items-center justify-center rounded-lg bg-[#181818] px-4 py-2 text-xs font-medium text-white transition-all hover:bg-[#2b2b2b] shadow-xs active:scale-95"
+            className="btn-flip inline-flex items-center justify-center rounded-lg bg-[#181818] px-4 py-2 text-xs font-medium text-white shadow-xs active:scale-95"
           >
             Launch App
           </Link>

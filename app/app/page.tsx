@@ -34,7 +34,7 @@ export default function EarnerPortalPage() {
   // Step 3: Window & Threshold
   const [windowPeriod, setWindowPeriod] = useState("2026-Q1");
   const [threshold, setThreshold] = useState("4200000");
-  const [currency, setCurrency] = useState("NGN");
+  const [currency, setCurrency] = useState("USD");
   const [expiryDays, setExpiryDays] = useState(18);
 
   // Step 4: Verifier Challenge
@@ -112,7 +112,7 @@ export default function EarnerPortalPage() {
       if (accumulatedTotal > 0 && reqThreshold > accumulatedTotal) {
         setIsGenerating(false);
         setRefusalError(
-          `BELOW_THRESHOLD: Qualifying attestations in ${windowPeriod} total ₦${accumulatedTotal.toLocaleString()}, which falls short of the requested ₦${reqThreshold.toLocaleString()} threshold. Proof halted locally. Zero traces were left on-chain.`
+          `BELOW_THRESHOLD: Qualifying attestations in ${windowPeriod} total $${accumulatedTotal.toLocaleString()}, which falls short of the requested $${reqThreshold.toLocaleString()} threshold. Proof halted locally. Zero traces were left on-chain.`
         );
         return;
       }
@@ -330,9 +330,8 @@ export default function EarnerPortalPage() {
                         onChange={(e) => setCurrency(e.target.value)}
                         className="rounded-r-lg border-l border-[#e4e4e7] bg-[#fafafa] px-3 text-xs font-medium text-[#71717a] focus:outline-none"
                       >
-                        <option value="NGN">₦ NGN</option>
-                        <option value="STRK">STRK</option>
                         <option value="USD">$ USD</option>
+                        <option value="STRK">STRK</option>
                       </select>
                     </div>
                   </div>
