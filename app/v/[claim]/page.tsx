@@ -14,6 +14,7 @@ export default function VerifyClaimPage({
 
   const [claimData, setClaimData] = useState<IssuedClaim | null>(null);
   const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
   const [presentedChallenge, setPresentedChallenge] = useState("");
   const [redeemState, setRedeemState] = useState<{
     attempted: boolean;
@@ -23,39 +24,14 @@ export default function VerifyClaimPage({
   const [isVerifying, setIsVerifying] = useState(false);
 
   useEffect(() => {
-    // Lookup claim in local store or construct fallback
     const found = getClaimById(claimParam);
     if (found) {
       setClaimData(found);
       setPresentedChallenge(found.challengePreimage);
+      setNotFound(false);
     } else {
-      // Create fallback valid claim for standalone URL testing
-      const fallback: IssuedClaim = {
-        claimId: claimParam.startsWith("0x") ? claimParam : `0x${claimParam}`,
-        shortId: claimParam,
-        earnerHandle: "0x0392019a82019283019283019283019283019283019283019283019283019283",
-        payerAddress: "0x0403bc891a271df912a7812a39281a8b9281a",
-        payerName: "Acme DAO",
-        isPayerEnrolled: true,
-        token: "NGN",
-        thresholdAmount: BigInt(4200000),
-        thresholdFormatted: "₦4,200,000",
-        fromPeriod: "1 Jan 2026",
-        toPeriod: "31 Mar 2026",
-        fromTimestamp: 1767225600,
-        toTimestamp: 1774915200,
-        verifierName: "Meridian Properties Ltd",
-        challengePreimage: "meridian_lease_challenge_2026",
-        challengeHash: "0x01a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2",
-        createdAt: Date.now() - 86400000,
-        expiresAt: Date.now() + 86400000 * 18,
-        status: "ACTIVE",
-        anonymitySetSize: 5,
-        paramsHash: "0x059a102938102938102938102938102938102938102938102938102938102938",
-        txHash: "0x04a2910293810293810293810293810293810293810293810293810293810293",
-      };
-      setClaimData(fallback);
-      setPresentedChallenge(fallback.challengePreimage);
+      setClaimData(null);
+      setNotFound(true);
     }
     setLoading(false);
   }, [claimParam]);
@@ -90,10 +66,50 @@ export default function VerifyClaimPage({
     }, 600);
   };
 
-  if (loading || !claimData) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-[#fafafa] flex items-center justify-center font-mono text-xs text-[#71717a]">
         Loading claim verification record...
+      </div>
+    );
+  }
+
+  if (notFound || !claimData) {
+    return (
+      <div className="min-h-screen bg-[#fafafa] flex flex-col justify-between">
+        <header className="border-b border-[#e4e4e7] bg-white/90 backdrop-blur-md px-6 py-4">
+          <div className="mx-auto flex max-w-4xl items-center justify-between">
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#111827] text-white font-mono font-bold text-xs">
+                V
+              </div>
+              <span className="font-display text-lg font-bold text-[#111827]">Velum</span>
+              <span className="font-mono text-[10px] text-[#059669] bg-[#ecfdf5] border border-[#a7f3d0] px-2 py-0.5 rounded-full font-semibold">
+                VERIFIER PORTAL
+              </span>
+            </Link>
+          </div>
+        </header>
+
+        <main className="mx-auto w-full max-w-2xl px-6 py-10 flex-1 flex items-center">
+          <div className="w-full rounded-2xl border border-[#fecaca] bg-[#fef2f2] p-8 text-center">
+            <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-[#fee2e2] text-xl font-bold text-[#991b1b]">
+              ✕
+            </div>
+            <h1 className="mt-4 font-display text-xl font-bold text-[#991b1b]">
+              Claim Not Found
+            </h1>
+            <p className="mt-2 text-sm text-[#7f1d1d]">
+              &ldquo;{claimParam}&rdquo; does not match any income claim in this registry. It may
+              be mistyped, revoked, or was never issued. No claim is presented as valid unless it
+              is found here.
+            </p>
+          </div>
+        </main>
+
+        <footer className="border-t border-[#e4e4e7] bg-white px-6 py-6 text-center font-mono text-xs text-[#71717a]">
+          © 2026 Velum · Private Income Proof Layer on Starknet STRK20
+        </footer>
       </div>
     );
   }
