@@ -27,31 +27,47 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Right Column: Contact Email */}
-          <div className="space-y-3 lg:col-span-6 lg:text-right">
-            <span className="font-mono text-[11px] text-[#858585] block">
-              [ contact us through e-mail ]
-            </span>
-            <a
-              href="mailto:contact@velum.cash"
-              className="font-display text-2xl sm:text-4xl font-bold text-[#181818] hover:underline"
-            >
-              contact@velum.cash
-            </a>
+          {/* Right Column: Quick Links */}
+          <div className="grid grid-cols-2 gap-8 lg:col-span-6 lg:justify-items-end">
+            <div className="space-y-3">
+              <span className="font-mono text-[11px] uppercase tracking-wider text-[#858585] block">
+                Product
+              </span>
+              <nav className="flex flex-col gap-2 text-xs font-medium text-[#181818]">
+                <Link href="/app" className="hover:text-[#2563eb] transition-colors">
+                  Earner Portal
+                </Link>
+                <Link href="/payer" className="hover:text-[#2563eb] transition-colors">
+                  Payer Console
+                </Link>
+                <a href="/#how-it-works" className="hover:text-[#2563eb] transition-colors">
+                  How It Works
+                </a>
+                <a href="/#faq" className="hover:text-[#2563eb] transition-colors">
+                  FAQ
+                </a>
+              </nav>
+            </div>
+
+            <div className="space-y-3 lg:text-right">
+              <span className="font-mono text-[11px] uppercase tracking-wider text-[#858585] block">
+                Legal
+              </span>
+              <nav className="flex flex-col gap-2 text-xs font-medium text-[#181818]">
+                <Link href="/terms" className="hover:text-[#2563eb] transition-colors">
+                  Terms &amp; Conditions
+                </Link>
+                <Link href="/privacy" className="hover:text-[#2563eb] transition-colors">
+                  Privacy Policy
+                </Link>
+              </nav>
+            </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="mt-16 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[#ededed]/60 pt-8 font-mono text-[11px] text-[#858585]">
           <div>© 2026 Velum | All Rights Reserved</div>
-          <div className="flex items-center gap-5">
-            <Link href="/terms" className="hover:text-[#181818] transition-colors">
-              Terms &amp; Conditions
-            </Link>
-            <Link href="/privacy" className="hover:text-[#181818] transition-colors">
-              Privacy Policy
-            </Link>
-          </div>
           <div>Built on Starknet STRK20 Privacy Pool</div>
         </div>
       </div>

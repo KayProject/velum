@@ -42,10 +42,10 @@ export function Navbar() {
         </nav>
 
         {/* Top Right Black Button */}
-        <div className="btn-flip-row flex items-center gap-3">
+        <div className="flex items-center gap-3">
           <Link
             href="/app"
-            className="btn-flip inline-flex items-center justify-center rounded-lg bg-[#181818] px-4 py-2 text-xs font-medium text-white shadow-xs active:scale-95"
+            className="btn-swing inline-flex items-center justify-center rounded-lg bg-[#181818] px-4 py-2 text-xs font-medium text-white shadow-xs active:scale-95"
           >
             Launch App
           </Link>

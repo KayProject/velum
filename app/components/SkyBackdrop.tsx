@@ -94,7 +94,7 @@ export function SkyBackdrop({ variant = "hero" }: { variant?: Variant }) {
       {/* Precision High-Contrast Technical Grid (Crisp 1px Visible Lines) */}
       <div
         ref={grid}
-        className="absolute inset-0 will-change-transform bg-[linear-gradient(to_right,rgba(24,24,24,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(24,24,24,0.08)_1px,transparent_1px)] bg-[size:4.5rem_4.5rem]"
+        className="absolute inset-0 will-change-transform bg-[linear-gradient(to_right,rgba(24,24,24,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(24,24,24,0.03)_1px,transparent_1px)] bg-[size:4.5rem_4.5rem]"
         style={{
           maskImage: "radial-gradient(ellipse 90% 70% at 50% 35%, #000 50%, transparent 90%)",
           WebkitMaskImage: "radial-gradient(ellipse 90% 70% at 50% 35%, #000 50%, transparent 90%)",
@@ -103,7 +103,7 @@ export function SkyBackdrop({ variant = "hero" }: { variant?: Variant }) {
 
       {/* Overlay Secondary White Grid Glow for Depth */}
       <div
-        className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.4)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.4)_1px,transparent_1px)] bg-[size:4.5rem_4.5rem]"
+        className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.15)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.15)_1px,transparent_1px)] bg-[size:4.5rem_4.5rem]"
       />
 
       {/* Crosshair Coordinate Markers & Technical Pixel Clusters */}

@@ -59,25 +59,28 @@
 }
 
 
-/* Flip-on-hover buttons. Put .btn-flip-row on the parent (establishes 3D
-   perspective for its children) and .btn-flip on each button. */
-.btn-flip-row {
-  perspective: 800px;
+/* Swing-and-hobble hover: a pendulum tilt that settles unevenly, like a
+   limping wobble, rather than a clean spin. */
+@keyframes swing-hobble {
+  0%   { transform: rotate(0deg)    translateX(0); }
+  12%  { transform: rotate(-7deg)   translateX(-2px); }
+  24%  { transform: rotate(6deg)    translateX(2px); }
+  36%  { transform: rotate(-4.5deg) translateX(-1.5px); }
+  48%  { transform: rotate(3.5deg)  translateX(1px); }
+  60%  { transform: rotate(-2deg)   translateX(-1px); }
+  72%  { transform: rotate(1.5deg)  translateX(0.5px); }
+  84%  { transform: rotate(-0.75deg) translateX(0); }
+  100% { transform: rotate(0deg)    translateX(0); }
 }
-.btn-flip {
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+.btn-swing {
+  transform-origin: 50% 100%;
 }
-.btn-flip:hover {
-  transform: rotateY(360deg);
+.btn-swing:hover {
+  animation: swing-hobble 0.7s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
-  .btn-flip {
-    transition: none;
-  }
-  .btn-flip:hover {
-    transform: none;
+  .btn-swing:hover {
+    animation: none;
   }
 }
 
