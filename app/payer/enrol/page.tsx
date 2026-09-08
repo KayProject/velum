@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { getEnrolments, enrolPayer, PayerEnrolment } from "@/lib/velum/store";
 import { WarningCircle, LockKey } from "@phosphor-icons/react";
+import { AppHeader } from "@/app/components/AppHeader";
+import { AppFooter } from "@/app/components/AppFooter";
 
 export default function PayerEnrolPage() {
   const [enrolName, setEnrolName] = useState("");
@@ -34,28 +36,18 @@ export default function PayerEnrolPage() {
 
   return (
     <div className="min-h-screen bg-[#fafafa] flex flex-col justify-between selection:bg-[#2563eb]/20 selection:text-[#1e40af]">
-      <header className="border-b border-[#e4e4e7] bg-white/90 backdrop-blur-md px-6 py-4">
-        <div className="mx-auto flex max-w-4xl items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#111827] text-white font-mono font-bold text-xs">
-              V
-            </div>
-            <span className="font-display text-lg font-bold text-[#111827]">
-              Velum
-            </span>
-            <span className="font-mono text-[10px] text-[#2563eb] bg-[#eff6ff] border border-[#bfdbfe] px-2 py-0.5 rounded-full font-semibold">
-              PAYER ENROLMENT
-            </span>
-          </Link>
-
+      <AppHeader
+        badge="PAYER ENROLMENT"
+        sticky={false}
+        rightSlot={
           <Link
             href="/payer"
             className="text-xs font-semibold text-[#71717a] hover:text-[#111827]"
           >
             ← Back to Payer Console
           </Link>
-        </div>
-      </header>
+        }
+      />
 
       <main className="mx-auto w-full max-w-4xl px-6 py-12">
         <div className="grid gap-8 lg:grid-cols-12">
@@ -152,9 +144,7 @@ export default function PayerEnrolPage() {
         </div>
       </main>
 
-      <footer className="border-t border-[#e4e4e7] bg-white px-6 py-6 text-center font-mono text-xs text-[#71717a]">
-        © 2026 Velum · Private Income Proof Layer on Starknet STRK20
-      </footer>
+      <AppFooter />
     </div>
   );
 }

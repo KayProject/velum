@@ -17,6 +17,8 @@ import {
   computeChallengeHash,
 } from "@/lib/velum/hashes";
 import { WarningCircle, Prohibit, CheckCircle } from "@phosphor-icons/react";
+import { AppHeader } from "@/app/components/AppHeader";
+import { AppFooter } from "@/app/components/AppFooter";
 
 export default function EarnerPortalPage() {
   const [activeTab, setActiveTab] = useState<"builder" | "claims">("builder");
@@ -158,21 +160,9 @@ export default function EarnerPortalPage() {
 
   return (
     <div className="min-h-screen bg-[#fafafa] flex flex-col justify-between selection:bg-[#3b82f6]/20 selection:text-[#1e40af]">
-      {/* Top Navbar */}
-      <header className="border-b border-[#e4e4e7] bg-white/90 backdrop-blur-md px-6 py-4 sticky top-0 z-30">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#111827] text-white font-mono font-bold text-xs">
-              V
-            </div>
-            <span className="font-display text-lg font-bold text-[#111827]">
-              Velum
-            </span>
-            <span className="font-mono text-[10px] text-[#2563eb] bg-[#eff6ff] border border-[#bfdbfe] px-2 py-0.5 rounded-full font-semibold">
-              EARNER PORTAL
-            </span>
-          </Link>
-
+      <AppHeader
+        badge="EARNER PORTAL"
+        rightSlot={
           <div className="flex items-center gap-4">
             <Link
               href="/payer"
@@ -187,8 +177,8 @@ export default function EarnerPortalPage() {
               ← Overview
             </Link>
           </div>
-        </div>
-      </header>
+        }
+      />
 
       {/* Main Container */}
       <main className="mx-auto w-full max-w-5xl px-6 py-10">
@@ -596,10 +586,7 @@ export default function EarnerPortalPage() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-[#e4e4e7] bg-white px-6 py-6 text-center font-mono text-xs text-[#71717a]">
-        © 2026 Velum · Private Income Proof Layer on Starknet STRK20
-      </footer>
+      <AppFooter />
     </div>
   );
 }
