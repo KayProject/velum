@@ -2,6 +2,8 @@
 
 **Prove what matters. Reveal nothing else.**
 
+[**Live Demo**](https://velum-stark.vercel.app) · [**Demo Video (YouTube)**](https://youtu.be/pdYNqDCj-rA) · [**Mainnet Contract**](https://voyager.online/contract/0x6f88f48e15e4325a0420da61bc933cdba982aba429c3eec5e445cfa3937ca05)
+
 Velum turns private income into a claim you can hand to a landlord, a lender, an insurer or a
 visa officer.
 
