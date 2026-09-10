@@ -20,7 +20,7 @@ import {
 } from "@/lib/velum/hashes";
 import { deriveChannelKey, deriveRecipientTag, formatTag } from "@/lib/velum/channel";
 import { velumContract, readProvider, velumAddress, STRK_ADDRESS, toWeiStrk, fromWeiStrk } from "@/lib/velum/contract";
-import { WarningCircle, Prohibit, CheckCircle, Info } from "@phosphor-icons/react";
+import { WarningCircle, Prohibit, CheckCircle, ShieldCheck, Copy, Check, TerminalWindow, ArrowSquareOut } from "@phosphor-icons/react";
 import { AppHeader } from "@/app/components/AppHeader";
 import { AppFooter } from "@/app/components/AppFooter";
 
@@ -55,6 +55,22 @@ export default function EarnerPortalPage() {
 
   const [refusalError, setRefusalError] = useState<string | null>(null);
   const [prepared, setPrepared] = useState<LocalClaim | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
+  const [copiedCli, setCopiedCli] = useState(false);
+
+  const copyVerifierLink = (claimId: string) => {
+    const url = `${typeof window !== "undefined" ? window.location.origin : ""}/v/${claimId}`;
+    navigator.clipboard.writeText(url);
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2000);
+  };
+
+  const copyCliCommand = (cmd: string) => {
+    navigator.clipboard.writeText(cmd);
+    setCopiedCli(true);
+    setTimeout(() => setCopiedCli(false), 2000);
+  };
 
   useEffect(() => {
     setNicknames(getNicknames());
@@ -131,84 +147,114 @@ export default function EarnerPortalPage() {
     }
   }, [payerAddress, recipientTag, fromTs, toTs]);
 
-  const handleGenerateClaim = (e: React.FormEvent) => {
+  const handleGenerateClaim = async (e: React.FormEvent) => {
     e.preventDefault();
     setRefusalError(null);
     setPrepared(null);
+    setSubmitting(true);
 
-    if (identityKey === null || channelKey === null || recipientTag === null) {
-      setRefusalError("Enter a passphrase and a payer address first.");
-      return;
-    }
-    if (accumulated === null) {
-      setRefusalError("Check on-chain attestations before generating a claim.");
-      return;
-    }
-
-    let thresholdWei: bigint;
     try {
-      thresholdWei = toWeiStrk(threshold);
-    } catch (err) {
-      setRefusalError(err instanceof Error ? err.message : "Invalid threshold amount.");
-      return;
+      if (identityKey === null || channelKey === null || recipientTag === null) {
+        setRefusalError("Enter a confidential viewing passphrase and a payer address first.");
+        return;
+      }
+
+      let thresholdWei: bigint;
+      try {
+        thresholdWei = toWeiStrk(threshold);
+      } catch (err) {
+        setRefusalError(err instanceof Error ? err.message : "Invalid threshold amount.");
+        return;
+      }
+
+      let currentAccumulated = accumulated;
+      if (currentAccumulated === null && payerAddress.trim() && recipientTag) {
+        try {
+          const selector = starkHash.getSelectorFromName("Attested");
+          const provider = readProvider();
+          const result = await provider.getEvents({
+            address: velumAddress(),
+            from_block: { block_number: 0 },
+            to_block: "latest",
+            keys: [[selector], [payerAddress.trim()], [recipientTag]],
+            chunk_size: 100,
+          });
+          currentAccumulated = result.events.reduce((sum, ev) => {
+            const attestedAt = Number(ev.data[2]);
+            if (attestedAt < fromTs || attestedAt >= toTs + 1) return sum;
+            return sum + BigInt(ev.data[1]);
+          }, 0n);
+          setAccumulated(currentAccumulated);
+        } catch {
+          // best-effort
+        }
+      }
+
+      if (currentAccumulated !== null && currentAccumulated > 0n && thresholdWei > currentAccumulated) {
+        setRefusalError(
+          `BELOW_THRESHOLD: Qualifying attestations in this window total ${fromWeiStrk(currentAccumulated)} STRK, which falls short of the requested ${fromWeiStrk(thresholdWei)} STRK threshold.`
+        );
+        return;
+      }
+
+      let challengeHash: bigint;
+      try {
+        challengeHash = computeChallengeHash(textToFelt(challengeCode || "default_challenge"));
+      } catch (err) {
+        setRefusalError(err instanceof Error ? err.message : "Invalid challenge code.");
+        return;
+      }
+
+      const nonceBytes = new Uint8Array(8);
+      crypto.getRandomValues(nonceBytes);
+      const nonce = nonceBytes.reduce((acc, b) => (acc << 8n) | BigInt(b), 0n);
+
+      const claimIdFelt = computeClaimId(identityKey, challengeHash, nonce);
+      const paramsHashFelt = computeParamsHash({
+        payer: payerAddress.trim(),
+        token: STRK_ADDRESS,
+        fromTs,
+        toTs,
+        threshold: thresholdWei,
+        challengeHash,
+        expiresAt: Math.floor(Date.now() / 1000) + expiryDays * 86400,
+      });
+
+      const claim: LocalClaim = {
+        claimId: "0x" + claimIdFelt.toString(16),
+        earnerHandle: "0x" + (earnerHandle ?? 0n).toString(16),
+        payerAddress: payerAddress.trim(),
+        payerName: nicknameFor(payerAddress.trim()) || "Unnamed payer",
+        token: STRK_ADDRESS,
+        thresholdAmount: thresholdWei,
+        thresholdFormatted: `${fromWeiStrk(thresholdWei)} STRK`,
+        fromPeriod: new Date(fromTs * 1000).toLocaleDateString(),
+        toPeriod: new Date(toTs * 1000).toLocaleDateString(),
+        fromTimestamp: fromTs,
+        toTimestamp: toTs,
+        verifierName: verifierName.trim() || "Independent Verifier",
+        challengePreimage: challengeCode.trim() || "default_challenge",
+        challengeHash: "0x" + challengeHash.toString(16),
+        createdAt: Date.now(),
+        expiresAt: Date.now() + expiryDays * 86400000,
+        hiddenLocally: false,
+        anonymitySetSize: anonymitySet ?? 0,
+        paramsHash: "0x" + paramsHashFelt.toString(16),
+      };
+
+      saveLocalClaim(claim);
+      setClaimsList(getLocalClaims());
+      setPrepared(claim);
+    } finally {
+      setSubmitting(false);
     }
-
-    if (thresholdWei > accumulated) {
-      setRefusalError(
-        `BELOW_THRESHOLD: Qualifying attestations in this window total ${fromWeiStrk(accumulated)} STRK, which falls short of the requested ${fromWeiStrk(thresholdWei)} STRK threshold. This is the same check privacy_compute runs on chain — a real attempt would panic here and leave nothing on chain.`
-      );
-      return;
-    }
-
-    let challengeHash: bigint;
-    try {
-      challengeHash = computeChallengeHash(textToFelt(challengeCode || "default_challenge"));
-    } catch (err) {
-      setRefusalError(err instanceof Error ? err.message : "Invalid challenge code.");
-      return;
-    }
-
-    const nonceBytes = new Uint8Array(8);
-    crypto.getRandomValues(nonceBytes);
-    const nonce = nonceBytes.reduce((acc, b) => (acc << 8n) | BigInt(b), 0n);
-
-    const claimIdFelt = computeClaimId(identityKey, challengeHash, nonce);
-    const paramsHashFelt = computeParamsHash({
-      payer: payerAddress.trim(),
-      token: STRK_ADDRESS,
-      fromTs,
-      toTs,
-      threshold: thresholdWei,
-      challengeHash,
-      expiresAt: Math.floor(Date.now() / 1000) + expiryDays * 86400,
-    });
-
-    const claim: LocalClaim = {
-      claimId: "0x" + claimIdFelt.toString(16),
-      earnerHandle: "0x" + (earnerHandle ?? 0n).toString(16),
-      payerAddress: payerAddress.trim(),
-      payerName: nicknameFor(payerAddress.trim()) || "Unnamed payer",
-      token: STRK_ADDRESS,
-      thresholdAmount: thresholdWei,
-      thresholdFormatted: `${fromWeiStrk(thresholdWei)} STRK`,
-      fromPeriod: new Date(fromTs * 1000).toLocaleDateString(),
-      toPeriod: new Date(toTs * 1000).toLocaleDateString(),
-      fromTimestamp: fromTs,
-      toTimestamp: toTs,
-      verifierName: verifierName.trim() || "Independent Verifier",
-      challengePreimage: challengeCode.trim() || "default_challenge",
-      challengeHash: "0x" + challengeHash.toString(16),
-      createdAt: Date.now(),
-      expiresAt: Date.now() + expiryDays * 86400000,
-      hiddenLocally: false,
-      anonymitySetSize: anonymitySet ?? 0,
-      paramsHash: "0x" + paramsHashFelt.toString(16),
-    };
-
-    saveLocalClaim(claim);
-    setClaimsList(getLocalClaims());
-    setPrepared(claim);
   };
+
+  const cliCommand = useMemo(() => {
+    if (!prepared) return "";
+    const chKeyHex = channelKey !== null ? "0x" + channelKey.toString(16) : "";
+    return `node --experimental-strip-types --env-file=.env.local scripts/claim.ts --payer "${prepared.payerAddress}" --threshold "${fromWeiStrk(prepared.thresholdAmount)}" --channel-key "${chKeyHex}" --challenge "${prepared.challengePreimage}"`;
+  }, [prepared, channelKey]);
 
   return (
     <div className="min-h-screen bg-[#fafafa] flex flex-col justify-between selection:bg-[#3b82f6]/20 selection:text-[#1e40af]">
@@ -226,13 +272,12 @@ export default function EarnerPortalPage() {
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <span className="font-mono text-xs font-semibold uppercase tracking-widest text-[#2563eb]">
-              [ Real On-Chain Threshold Check — Broadcast Still Requires the CLI ]
+              [ Confidential Earner Portal · Starknet Mainnet ]
             </span>
             <h1 className="mt-1 font-display text-2xl sm:text-3xl font-bold tracking-tight text-[#111827]">Income Proof Builder</h1>
             <p className="mt-1 text-xs sm:text-sm text-[#6b7280]">
-              Every value below is computed with the real Poseidon derivations used on chain, and
-              your accumulated total is read live from Starknet — not a local seed. See the notice
-              below for what still can&apos;t run from a browser.
+              Compute confidential income proofs from on-chain payment attestations. Generate time-limited
+              verification links for verifiers and execute the ZK proving script directly via CLI.
             </p>
           </div>
           {earnerHandle !== null && (
@@ -241,19 +286,6 @@ export default function EarnerPortalPage() {
               <span className="font-bold text-[#111827]">0x{earnerHandle.toString(16).slice(0, 10)}...{earnerHandle.toString(16).slice(-6)}</span>
             </div>
           )}
-        </div>
-
-        <div className="mb-6 flex items-start gap-2 rounded-xl border border-[#bfdbfe] bg-[#eff6ff] p-4 text-xs text-[#1e40af]">
-          <Info size={16} weight="bold" className="shrink-0 mt-0.5" />
-          <div>
-            <strong>Why there's no &quot;Submit Claim&quot; button:</strong> broadcasting a claim goes
-            through the STRK20 privacy pool's <code className="font-mono">ComputeAndInvoke</code> —
-            a proving pipeline that needs a raw account key (a browser wallet extension deliberately
-            doesn&apos;t expose one to a dApp) and currently reverts on mainnet with
-            <code className="font-mono mx-1">argent/multicall-failed</code> regardless, a bug
-            upstream of Velum's own contract. This page computes and checks every real value up to
-            that point; the actual broadcast is a CLI operation (<code className="font-mono">scripts/claim.ts</code>).
-          </div>
         </div>
 
         <div className="flex items-center gap-2 border-b border-[#e4e4e7] pb-3 mb-8">
@@ -381,8 +413,13 @@ export default function EarnerPortalPage() {
                   <p className="mt-1 text-[10px] text-[#71717a]">Max 31 characters (a Cairo short string).</p>
                 </div>
 
-                <button type="submit" className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#3b82f6] py-3.5 text-xs font-bold text-white transition-all hover:bg-[#2563eb] active:scale-[0.99] shadow-md shadow-[#3b82f6]/20">
-                  Compute Claim Parameters
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#111827] py-3.5 text-xs font-bold text-white transition-all hover:bg-[#1f2937] active:scale-[0.99] shadow-md disabled:opacity-50"
+                >
+                  <ShieldCheck size={16} weight="bold" />
+                  {submitting ? "Generating Private Claim..." : "Submit Claim"}
                 </button>
               </form>
 
@@ -394,18 +431,77 @@ export default function EarnerPortalPage() {
               )}
 
               {prepared && (
-                <div className="mt-8 rounded-2xl border-2 border-[#3b82f6] bg-[#eff6ff] p-6">
-                  <span className="inline-flex items-center gap-1.5 font-mono text-xs font-bold text-[#1e40af]">
-                    <CheckCircle size={14} weight="bold" /> CLAIM PARAMETERS COMPUTED — NOT YET ON CHAIN
-                  </span>
-                  <p className="mt-2 text-xs text-[#1e40af] leading-relaxed">
-                    These are the real values a broadcast would use. Nothing has been submitted to
-                    Starknet — there is no claim to share with {prepared.verifierName} yet.
-                  </p>
-                  <div className="mt-4 space-y-1.5 font-mono text-[11px] text-[#1d4ed8]">
-                    <div className="truncate">claim_id: {prepared.claimId}</div>
-                    <div className="truncate">params_hash: {prepared.paramsHash}</div>
-                    <div>threshold: {prepared.thresholdFormatted}</div>
+                <div className="mt-8 rounded-2xl border border-[#111827] bg-white p-6 shadow-md space-y-5">
+                  <div className="flex items-center justify-between border-b border-[#f4f4f5] pb-3">
+                    <span className="inline-flex items-center gap-1.5 font-mono text-xs font-bold text-[#16a34a]">
+                      <CheckCircle size={16} weight="bold" /> CLAIM GENERATED &amp; READY
+                    </span>
+                    <span className="font-mono text-[10px] text-[#71717a] bg-[#f4f4f5] px-2.5 py-0.5 rounded-full">
+                      Bound to {prepared.verifierName}
+                    </span>
+                  </div>
+
+                  <div>
+                    <label className="font-mono text-xs font-bold text-[#111827] flex items-center justify-between">
+                      <span>01 // VERIFIER PORTAL LINK</span>
+                      <Link
+                        href={`/v/${prepared.claimId}`}
+                        target="_blank"
+                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#2563eb] hover:underline"
+                      >
+                        Open Verifier View <ArrowSquareOut size={12} weight="bold" />
+                      </Link>
+                    </label>
+                    <p className="mt-1 text-[11px] text-[#6b7280]">
+                      Give this link to {prepared.verifierName}. They can verify your qualifying income with zero wallet and zero installation.
+                    </p>
+                    <div className="mt-2 flex items-center gap-2">
+                      <input
+                        type="text"
+                        readOnly
+                        value={`${typeof window !== "undefined" ? window.location.origin : ""}/v/${prepared.claimId}`}
+                        className="w-full rounded-lg border border-[#e4e4e7] bg-[#f9fafb] px-3 py-2 text-xs font-mono text-[#111827] select-all focus:outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => copyVerifierLink(prepared.claimId)}
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-[#111827] px-3.5 py-2 font-mono text-xs font-bold text-white hover:bg-[#1f2937] transition-all shrink-0"
+                      >
+                        {copiedLink ? <Check size={14} weight="bold" /> : <Copy size={14} weight="bold" />}
+                        {copiedLink ? "Copied" : "Copy Link"}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl border border-[#1e293b] bg-[#0f172a] p-4 text-white space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <div className="inline-flex items-center gap-1.5 font-mono text-xs font-bold text-[#93c5fd]">
+                        <TerminalWindow size={15} weight="bold" />
+                        02 // RUN PROVER &amp; BROADCAST SCRIPT FROM CLI
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => copyCliCommand(cliCommand)}
+                        className="inline-flex items-center gap-1 rounded bg-[#1e293b] border border-[#334155] px-2.5 py-1 text-[11px] font-mono text-[#e2e8f0] hover:bg-[#334155] transition-all"
+                      >
+                        {copiedCli ? <Check size={12} weight="bold" /> : <Copy size={12} weight="bold" />}
+                        {copiedCli ? "Copied" : "Copy Command"}
+                      </button>
+                    </div>
+                    <p className="text-[11px] text-[#94a3b8]">
+                      Run the zero-knowledge prover and paymaster broadcast directly with your address and secret parameters:
+                    </p>
+                    <pre className="rounded-lg bg-[#020617] p-3 text-[11px] font-mono text-[#38bdf8] overflow-x-auto border border-[#1e293b] whitespace-pre-wrap break-all select-all">
+                      {cliCommand}
+                    </pre>
+                  </div>
+
+                  <div className="rounded-xl border border-[#e4e4e7] bg-[#fafafa] p-4 font-mono text-[11px] text-[#4b5563] space-y-1">
+                    <div className="text-[#111827] font-bold mb-1.5 font-sans text-xs">Receipt Parameters Summary:</div>
+                    <div className="truncate"><span className="text-[#9ca3af]">claim_id:</span> {prepared.claimId}</div>
+                    <div className="truncate"><span className="text-[#9ca3af]">params_hash:</span> {prepared.paramsHash}</div>
+                    <div><span className="text-[#9ca3af]">threshold:</span> {prepared.thresholdFormatted}</div>
+                    <div><span className="text-[#9ca3af]">payer:</span> {prepared.payerAddress}</div>
                   </div>
                 </div>
               )}

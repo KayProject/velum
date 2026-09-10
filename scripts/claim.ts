@@ -81,62 +81,67 @@ async function main() {
   console.log(`account   ${address}`);
   console.log(`velum     ${velumAddress}`);
 
-  // --- 1. payer attests a payment, publicly, directly (no privacy involved on this side) ------
-  const channelKey = num.toHex(BigInt(Date.now()) * 1000003n + 7n); // arbitrary secret, not random-quality — fine for a demo claim
+  function getArg(flag: string): string | undefined {
+    const idx = process.argv.indexOf(flag);
+    return idx !== -1 && idx + 1 < process.argv.length ? process.argv[idx + 1] : undefined;
+  }
+  const hasFlag = (flag: string) => process.argv.includes(flag);
+
+  const argPayer = getArg("--payer");
+  const argThreshold = getArg("--threshold");
+  const argChannelKey = getArg("--channel-key");
+  const argChallenge = getArg("--challenge");
+  const skipAttest = hasFlag("--skip-attest");
+
+  const payer = argPayer || address;
+  const channelKey = argChannelKey || num.toHex(BigInt(Date.now()) * 1000003n + 7n);
   const recipientTag = num.toHex(computeRecipientTag(channelKey));
-  const attestAmount = toWei("10");
-
-  console.log(`\nattesting ${fromWei(attestAmount)} STRK to recipient_tag ${recipientTag}`);
-  const attestCall = await account.execute({
-    contractAddress: velumAddress,
-    entrypoint: "attest",
-    calldata: [recipientTag, STRK, attestAmount.toString()],
-  });
-  console.log(`  ${attestCall.transaction_hash}`);
-  const attestReceipt = await provider.waitForTransaction(attestCall.transaction_hash);
-  console.log("  confirmed");
-
-  const attestBlockNumber = (attestReceipt as { block_number: number }).block_number;
-  const attestedAt = (await provider.getBlockWithTxHashes(attestBlockNumber)).timestamp;
-
-  // --- 2. earner claims it privately, through the pool's ComputeAndInvoke ---------------------
-  const threshold = toWei("5"); // claim "at least 5 STRK", well under what was attested
-  const challengePreimage = num.toHex(BigInt(Date.now()) * 1000033n + 11n);
+  const threshold = argThreshold ? toWei(argThreshold) : toWei("5");
+  const challengePreimage = argChallenge
+    ? (argChallenge.startsWith("0x") ? argChallenge : num.toHex(Buffer.from(argChallenge)))
+    : num.toHex(BigInt(Date.now()) * 1000033n + 11n);
   const challengeHash = num.toHex(computeChallengeHash(challengePreimage));
   const expiresAt = BigInt(Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60); // 30 days out
   const fromTs = 0n;
-  const toTs = BigInt(attestedAt) + 3600n;
+  let toTs = BigInt(Math.floor(Date.now() / 1000)) + 3600n;
   const nonce = num.toHex(BigInt(Date.now()) * 1000037n + 13n);
 
-  console.log(`\nclaiming: threshold ${fromWei(threshold)} STRK, expires ${new Date(Number(expiresAt) * 1000).toISOString()}`);
-  console.log(`challenge preimage (keep this — it's what a verifier needs): ${challengePreimage}`);
+  let attestBlockNumber = 0;
+  if (!skipAttest) {
+    const attestAmount = threshold > toWei("10") ? threshold * 2n : toWei("10");
+    console.log(`\nattesting ${fromWei(attestAmount)} STRK to recipient_tag ${recipientTag}`);
+    const attestCall = await account.execute({
+      contractAddress: velumAddress,
+      entrypoint: "attest",
+      calldata: [recipientTag, STRK, attestAmount.toString()],
+    });
+    console.log(`  ${attestCall.transaction_hash}`);
+    const attestReceipt = await provider.waitForTransaction(attestCall.transaction_hash);
+    console.log("  confirmed");
+
+    attestBlockNumber = (attestReceipt as { block_number: number }).block_number;
+    const attestedAt = (await provider.getBlockWithTxHashes(attestBlockNumber)).timestamp;
+    toTs = BigInt(attestedAt) + 3600n;
+  }
+
+  // --- 2. earner claims it privately, through the pool's ComputeAndInvoke ---------------------
+  console.log(`\nclaiming: threshold ${fromWei(threshold)} STRK, payer ${payer}`);
+  console.log(`expires: ${new Date(Number(expiresAt) * 1000).toISOString()}`);
+  console.log(`challenge preimage: ${challengePreimage}`);
 
   const feeAmount = await callFelt(provider, config.poolAddress, "get_fee_amount");
   console.log(`\nprotocol fee    ${fromWei(feeAmount)} STRK (paid from existing private balance)`);
 
-  // A tiny real withdraw, paired with the claim — not a fresh public deposit. A withdraw already
-  // produces a change/surplus note (a WriteOnce — see redeem.ts's header for why one is required
-  // at all), without a public approve or the invoke_and_apply_action multicall path a deposit
-  // forces, which is what a combined deposit+compute_and_invoke tripped on
-  // (INVALID_INVOKE_RETURN_DATA / argent/multicall-failed). Relies on the private balance already
-  // shielded from prior runs (shield.ts, redeem.ts's leftover surplus) covering withdraw + fee —
-  // the SDK's own compiler fails fast, before any cost, if it doesn't.
-  // Net must come out to exactly zero, not merely non-negative: a leftover surplus above what
-  // withdraw+fee consumes needs an explicit surplus action to land anywhere, which Strk20Action
-  // has no case for here — that's the "no surplus action found" this amount is chosen to avoid.
-  // 8.0 STRK is this account's current private balance (shield.ts x2 + redeem.ts's leftover).
   const currentPrivateBalance = toWei("8.0");
   const claimWithdrawAmount = currentPrivateBalance - feeAmount;
 
-  // Proving runs against a block 10 behind head (see shield.ts) so the paymaster's own view of
-  // head isn't "too recent" by the time this reaches execution. That margin must not reach back
-  // past the attest confirmed above, or sum_attestations() runs against state that predates it —
-  // BELOW_THRESHOLD with nothing wrong about the claim itself. Wait for the chain to clear that.
   const PROVING_MARGIN = 10;
   let currentBlock = await provider.getBlockLatestAccepted();
-  while (currentBlock.block_number - PROVING_MARGIN < attestBlockNumber + 2) {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-    currentBlock = await provider.getBlockLatestAccepted();
+  if (attestBlockNumber > 0) {
+    while (currentBlock.block_number - PROVING_MARGIN < attestBlockNumber + 2) {
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+      currentBlock = await provider.getBlockLatestAccepted();
+    }
   }
   const provingBlock = currentBlock.block_number - PROVING_MARGIN;
 
@@ -188,7 +193,7 @@ async function main() {
       contract: velumAddress,
       compute_calldata: [
         channelKey,
-        address,
+        payer,
         STRK,
         fromTs.toString(),
         toTs.toString(),
@@ -198,7 +203,7 @@ async function main() {
         nonce,
       ],
       invoke_calldata: [
-        address,
+        payer,
         STRK,
         fromTs.toString(),
         toTs.toString(),
